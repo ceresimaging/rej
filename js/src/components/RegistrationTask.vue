@@ -24,11 +24,7 @@
           <div ref="box" class="vertical-center">
             <v-card ripple elevation="10" class="overhang-column">
 
-              <v-card-title primary-title>
-                <h3 headline>Matching Points</h3>
-              </v-card-title>
-
-              <v-card-text style="min-height: 12em; padding-top: 0">
+              <v-card-text>
                 <PointList 
                   v-if="points.length > 0" 
                   :showPredictBtns="canWarp"
@@ -38,7 +34,7 @@
                   :imageryPointColor="imageryPointColor"
                 />
                 <div v-else>
-                  <span style="font-style: italic; color: #aaa">Click matching features on the left and right to register right image.</span>
+                  <span style="font-style: italic; color: #aaa">Click matching features on the left and right to georeference right image.</span>
                 </div>
               </v-card-text>
               
@@ -342,6 +338,16 @@ ${pointLines}`
   color: #2c3e50;
   position: relative;
 }
+
+.jp-Cell .registration-task {
+  /* We're in a Jupyter Cell, limit height to 90% of the browser window height
+  minus 200 pixels for jupyterlab chrome */
+ /*max-height: calc(90vh - 200px);*/
+}
+
+.registration-task .application--wrap {
+  min-height: 350px;
+}
 </style>
 
 <style scoped>
@@ -387,11 +393,8 @@ span.keycap {
 .vertical-center {
   position: absolute;
   left: -135px;
-  /*right: -135px; */
-  min-width: 270px;
-  margin-top: 2em;
+  right: -135px;
   bottom: 0;
-  transform: translateY(-10%);
   z-index: 10;
 }
 </style>
