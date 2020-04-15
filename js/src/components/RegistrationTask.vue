@@ -390,8 +390,8 @@ span.keycap {
   /*right: -135px; */
   min-width: 270px;
   margin-top: 2em;
-  top: 30%;
-  transform: translateY(-30%);
+  bottom: 0;
+  transform: translateY(-10%);
   z-index: 10;
 }
 </style>
