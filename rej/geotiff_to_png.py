@@ -140,7 +140,8 @@ def write_png(src, png_filename, remap_photoscan_nodata=True):
         height=im.shape[1],
         dtype=im.dtype,
         count=3,
-        nodata=0
+        nodata=0,
+        zlevel=1, # fastest compression possible
     ) as dst:
         dst.write(im)
 
