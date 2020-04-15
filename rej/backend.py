@@ -27,18 +27,12 @@ class Rej(DOMWidget):
     def __init__(self, img, reference_img, *args, **kwargs):
         super(Rej, self).__init__(*args, **kwargs)
 
+        logger.info(f"Loading {img} and {reference_img}")
+
         # TODO: use self.imagery and self.reference to pass this entirely
         # in memory, saving the slowness of writing out to S3!
-
-        logger.error(f"Loading: {img} and {reference_img}")
-
         self.imageryPath = geotiff_to_png(img)[0]
         self.referencePath = geotiff_to_png(reference_img)[0]        
-
-    # def __init__(self, img, reference_img, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.img = img
-    #     self.reference_img = reference_img
 
 def register(img, reference_img):
     return Rej(img, reference_img)
