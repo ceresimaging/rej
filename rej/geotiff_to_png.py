@@ -5,6 +5,7 @@ import warnings
 import logging
 
 import rasterio
+import cv2
 
 import skimage
 import skimage.exposure
@@ -133,6 +134,22 @@ def write_png(src, png_filename, remap_photoscan_nodata=True):
             )
         )
 
+    # We are using CV2 to write because it is MUCH faster
+    # For a 100MB GeoTIFF on Seth's MBP rasterio/gdal/libpng was taking 3s
+    # to write with zlevel=1 (lowest compress gdal driver allowed), 
+    # and 6s with the default (zlevel=6)
+    # whereas CV2 snippet below wass taking 1.25s
+    cv2.imwrite(
+        png_filename,
+        # CV2 only likes BGRA, Rasterio has (probably) loaded this as RGBA
+        cv2.cvtColor(
+            # Rasterio defaults to axis 0 being channels
+            # but most python programs assume X,Y,CHAN order
+            np.moveaxis(im, 0, -1), 
+            cv2.COLOR_RGBA2BGRA
+        )
+    )
+        
     with rasterio.open(
         png_filename, 'w', 
         driver='PNG', 

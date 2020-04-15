@@ -2,3 +2,4 @@ ipywidgets
 traitlets
 rasterio
 numpy
+opencv
