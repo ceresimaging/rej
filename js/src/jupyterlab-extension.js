@@ -26,7 +26,7 @@ const extension = {
     mainMenu,
     widgets,
   ) => {
-    _debug.jupyter = app
+    window._debug.jupyter = app
 
     widgets.registerWidget({
       name: 'ceresimaging-rej',
@@ -47,7 +47,7 @@ const extension = {
     commands.addCommand(command, {
       label: 'Open Georeference Widget',
       caption: 'Open Georeference Widget',
-      execute: (args) => {
+      execute: () => {
         const widget = new RejWidget()
         shell.add(widget, 'main')
       }

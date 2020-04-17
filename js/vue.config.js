@@ -1,5 +1,3 @@
-const ThreadsPlugin = require('threads-plugin');
-
 module.exports = {
 
   // Its possible we want this to support <template> tags in .vue files:
@@ -16,7 +14,7 @@ module.exports = {
     devtool: "none",
     output: {
       /* TODO: DOES IT STILL BUILD WITHOUT THIS? */
-      libraryTarget: "commonjs2"
+      /* libraryTarget: "commonjs2" */
     },
     optimization: {
       // Don't minimize: lets let jupyterlab handle this

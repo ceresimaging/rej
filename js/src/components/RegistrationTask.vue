@@ -8,8 +8,8 @@
     <link href="//cdn.jsdelivr.net/npm/@mdi/font@3.x/css/materialdesignicons.min.css" rel="stylesheet">
 
     <v-content pa-0 ma-0>
-      <v-layout align-top justify-center row fill-height>
-        <v-flex xs6 grow style="position: relative">
+      <v-row class="align-top fill-height" justify="center"  >
+        <v-col class="grow" style="position: relative">
           <ImagePane
             :image="referenceImage"
             :warpedImage="warpedImage"
@@ -17,7 +17,7 @@
             :pointColor="referencePointColor"
             @points-changed="referencePoints = $event" 
           />
-        </v-flex>
+        </v-col>
 
         <div style="position: relative">
           <div ref="box" class="vertical-center">
@@ -72,14 +72,14 @@
           </div>
         </div>
 
-        <v-flex xs6 grow style="position: relative">
+        <v-col class="grow" style="position: relative">
           <ImagePane
             :image="imageryImage"
             :pointColor="imageryPointColor"
             @points-changed="imageryPoints = $event"
           />
-        </v-flex>
-      </v-layout>
+        </v-col>
+      </v-row>
 
       <v-snackbar
         v-model="showToggleHint"
@@ -112,9 +112,9 @@ import { save } from 'save-file'
 // (done by jupyterlab) is the only one that's got the
 // publicPath set right, we need to load the public path
 // dynamically here BEFORE trying to instantiate the WarpWorker
-import { PageConfig } from '@jupyterlab/coreutils'
+// import { PageConfig } from '@jupyterlab/coreutils'
 // eslint-disable-next-line
-__webpack_public_path__ = PageConfig.getOption('fullStaticUrl') + '/';
+// __webpack_public_path__ = PageConfig.getOption('fullStaticUrl') + '/'
 import WarpWorker from 'worker-loader?name=warp-worker.js!../utils/warp-worker.js'
 
 window.Vuetify = Vuetify
@@ -184,7 +184,7 @@ export default {
         image.onerror = () => {
           this.numImagesLoading--
           const message = `Couldn't load PNG:\n${url}`
-          alert(msg)
+          alert(message)
           throw message
         }
         image.src = url
@@ -212,10 +212,7 @@ export default {
       const image = await createImageBitmap(this.imageryImage)
 
       const warpWorker = await this.warpWorker
-      const { warpedImage } = await warpWorker.warpImage({
-        transform: this.transform,
-        image: image
-      })
+      const { warpedImage } = await warpWorker.warpImage({ transform, image })
       this.warpedImage = warpedImage
       this.showWarpedImage = true
       this.warping = false
@@ -245,6 +242,7 @@ export default {
   },
   computed: {
     canWarp() {
+      // eslint-disable-next-line
       return this.points.filter(([p1, p2, rmse]) => p1 && p2).length >= 4
     },
     points() {

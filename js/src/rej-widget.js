@@ -1,6 +1,8 @@
 import { VueWidget, VueDOMWidget } from './utils/vue-widget'
 import { DOMWidgetModel } from '@jupyter-widgets/base'
-import { PageConfig } from '@jupyterlab/coreutils';
+import { PageConfig } from '@jupyterlab/coreutils'
+// eslint-disable-next-line
+__webpack_public_path__ = PageConfig.getOption('fullStaticUrl') + '/'
 
 import createApp from './createapp'
 
@@ -45,8 +47,8 @@ export class RejModel extends DOMWidgetModel {
       _model_name: 'RejModel',
       _model_module: 'ceresimaging-rej',
       _view_module: 'ceresimaging-rej',
-      imageryPath: "flights/improc.png",
-      referencePath: "flights/Flight%208658/qc/2019-09-23%201380%20Harlan%20Blocks%20GOES.gif",
+      imageryPath: "",
+      referencePath: "",
       imagery: null, //new DataView(new ArrayBuffer(0)),
       reference: null, // new DataView(new ArrayBuffer(0)),
     }
