@@ -108,10 +108,15 @@ import { zip_longest } from 'zip-array'
 import { spawn } from 'threads'
 import { save } from 'save-file'
 
+// Since we go through two webpacks, and the 2nd one
+// (done by jupyterlab) is the only one that's got the
+// publicPath set right, we need to load the public path
+// dynamically here BEFORE trying to instantiate the WarpWorker
+import { PageConfig } from '@jupyterlab/coreutils'
+// eslint-disable-next-line
+__webpack_public_path__ = PageConfig.getOption('fullStaticUrl') + '/';
 import WarpWorker from 'worker-loader?name=warp-worker.js!../utils/warp-worker.js'
 
-window.WarpWorker = WarpWorker
-window.Worker = Worker
 window.Vuetify = Vuetify
 
 const components = {
@@ -124,9 +129,6 @@ export default {
   name: 'registration-task',
   props: ['referenceURL', 'imageryURL'],
   data() {
-    console.log("V6")
-    
-    debugger;
     return {
       referencePointColor: "#FFFF00",
       referencePoints: [],
