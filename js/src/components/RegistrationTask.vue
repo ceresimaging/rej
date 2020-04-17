@@ -105,13 +105,13 @@ import PointList from './PointList'
 import loadGeotiff from '../utils/geotiff'
 
 import { zip_longest } from 'zip-array'
-import { spawn, Worker } from 'threads'
+import { spawn } from 'threads'
 import { save } from 'save-file'
 
-import DasWorker from 'worker-loader?name=warp-worker.js!../utils/warp-worker.js'
+import WarpWorker from 'worker-loader?name=warp-worker.js!../utils/warp-worker.js'
 
-window.dasworker = DasWorker
-
+window.WarpWorker = WarpWorker
+window.Worker = Worker
 window.Vuetify = Vuetify
 
 const components = {
@@ -124,7 +124,7 @@ export default {
   name: 'registration-task',
   props: ['referenceURL', 'imageryURL'],
   data() {
-    console.log("V5")
+    console.log("V6")
     
     debugger;
     return {
@@ -143,9 +143,7 @@ export default {
       warping: false,
       showToggleHint: false,
       numImagesLoading: 0,
-      warpWorker: spawn(new DasWorker()
-        //new Worker("../utils/warp-worker")
-      )
+      warpWorker: spawn(WarpWorker())
     }
   },
   components,
