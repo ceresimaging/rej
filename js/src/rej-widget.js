@@ -23,11 +23,17 @@ const toDataURL = (pngBytes) =>
     )
   )
 
-const toLabURL = (localPath) => `${PageConfig.getBaseUrl()}files/${localPath}`
+const toLabURL = (localPath) => localPath ? `${PageConfig.getBaseUrl()}files/${localPath}` : localPath
 
 export class RejDOMWidget extends VueDOMWidget {
   constructor(...rest) {
     super(...rest)
+    console.log("cheelen down hard")
+    this.listenTo(this.model, 'change:referencePath', this._count_changed, this);
+  }
+  _count_changed() {
+    console.log("HI! Count changed u know?")
+    window.vm = this.vue
   }
   createVue() {
     const { imageryPath, referencePath, imagery, reference } = this.model.attributes
@@ -37,6 +43,7 @@ export class RejDOMWidget extends VueDOMWidget {
       imageryURL: imagery ? toDataURL(imagery) : toLabURL(imageryPath),
     })
   }
+  
 }
 
 export class RejModel extends DOMWidgetModel {
@@ -47,8 +54,8 @@ export class RejModel extends DOMWidgetModel {
       _model_name: 'RejModel',
       _model_module: 'ceresimaging-rej',
       _view_module: 'ceresimaging-rej',
-      imageryPath: "",
-      referencePath: "",
+      imageryPath: null,
+      referencePath: null,
       imagery: null, //new DataView(new ArrayBuffer(0)),
       reference: null, // new DataView(new ArrayBuffer(0)),
     }
