@@ -133,10 +133,6 @@ export default {
       console.log((window.innerHeight * 0.9) - 200)
       this.stage.height((window.innerHeight * 0.9) - 200)
       this.scaleToFit()
-      this.$nextTick(() => {
-        console.log("Transform: ", this.transform)
-      })
-
     },
   },
   computed: {
