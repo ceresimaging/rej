@@ -7,7 +7,6 @@
     <link href="//fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
     <link href="//cdn.jsdelivr.net/npm/@mdi/font@3.x/css/materialdesignicons.min.css" rel="stylesheet">
 
-    <v-btn v-if="!signedIn" @click="doAuth" style="display: none; position: absolute; top: 0px; left: 0px; z-index: 100">Login to Load TIFFs</v-btn>
     <v-content pa-0 ma-0>
       <v-layout align-top justify-center row fill-height>
         <v-flex xs6 grow style="position: relative">
@@ -22,6 +21,12 @@
 
         <div style="position: relative">
           <div ref="box" class="vertical-center">
+            <v-card v-if="points.length > 0" class="extra-options-box">
+              <v-card-text>
+                <v-checkbox :disabled="points.length < 4" v-model="autoWarp" title="Warp when points change" label="Auto-warp"/>
+                <v-checkbox :disabled="!warpedImage" @change="numToggles += 1" v-model="showWarpedImage" title="Try [spacebar] to toggle" label="Overlay Warped Image" />
+              </v-card-text>
+            </v-card>
             <v-card ripple elevation="10" class="overhang-column">
 
               <v-card-text>
@@ -57,12 +62,7 @@
                 </v-btn>
               </v-card-actions>
             </v-card>
-            <v-card v-if="points.length > 0" class="extra-options-box">
-              <v-card-text>
-                <v-checkbox :disabled="points.length < 4" v-model="autoWarp" title="Warp when points change" label="Auto-warp"/>
-                <v-checkbox :disabled="!warpedImage" @change="numToggles += 1" v-model="showWarpedImage" title="Try [spacebar] to toggle" label="Overlay Warped Image" />
-              </v-card-text>
-            </v-card>
+
 
             <div v-if="numImagesLoading > 0" style="margin-top: 1em">
               <label>Downloading Image(s)...</label>
@@ -83,7 +83,7 @@
 
       <v-snackbar
         v-model="showToggleHint"
-        :bottom="true"
+        :top="true"
         :timeout="6000"
       >
         Hint: try &nbsp;<span class="keycap"> spacebar </span>&nbsp; and &nbsp;<span class="keycap"> shift </span>-<span class="keycap"> space </span>&nbsp; to toggle
@@ -183,26 +183,11 @@ export default {
         }
         image.onerror = () => {
           this.numImagesLoading--
-          console.log(`Couldn't load PNG:\n${url}`)
+          const message = `Couldn't load PNG:\n${url}`
+          alert(msg)
+          throw message
         }
         image.src = url
-      }
-    },
-    async doAuth() {
-      let authResponse
-      const user = await this.$gAuth.signIn()
-      if (this.$gAuth.isAuthorized) {
-        authResponse = user.getAuthResponse()
-      } else {
-        alert("Couldn't sign in for some reason (???)")
-      }
-
-      if (authResponse) {
-        window.authResponse = authResponse
-        this.$localStorage.idToken = authResponse.id_token
-        this.$localStorage.accessToken = authResponse.access_token
-        this.$localStorage.authExpiresAt = authResponse.expires_at || authResponse.expiry_date
-        this.$localStorage.refreshToken = authResponse.refresh_token
       }
     },
     async savePTS () {
@@ -262,11 +247,6 @@ export default {
     canWarp() {
       return this.points.filter(([p1, p2, rmse]) => p1 && p2).length >= 4
     },
-    s3() {
-      const s3 = S3(this.$localStorage.idToken)
-      window.s3 = s3
-      return s3
-    },
     points() {
       return zip_longest(this.referencePoints, this.imageryPoints, this.rmse)
     },
@@ -314,20 +294,33 @@ ${pointLines}`
     this.loadImage(referenceURL, 'referenceImage')
   },
   mounted() {
-    document.addEventListener("keydown", ({ key, repeat, shiftKey }) => {
-      if (repeat) return
-      if (key == " " && !shiftKey) {
+    document.addEventListener("keydown", (e) => {
+      if (e.key == " " && !e.shiftKey) {
+        e.stopPropagation()
+        e.preventDefault()
+        if (e.repeat) return
+
         this.showWarpedImage = !this.showWarpedImage
+        console.log(e)
+
       }
     })
-    document.addEventListener("keyup", ({ key, repeat }) => {
-      if (repeat) return
-      if (key == " ") {
+    document.addEventListener("keyup", (e) => {
+      if (e.repeat) return
+      let handledKey = false
+      if (e.key == " ") {
         this.showWarpedImage = !this.showWarpedImage
-      } else if (key == "w") {
+        handledKey = true
+      } else if (e.key == "w") {
         this.warp()
-      } else if (key == "s") {
+        handledKey = true
+      } else if (e.key == "s") {
         this.savePTS()
+        handledKey = true
+      }
+      if (handledKey) {
+        e.stopPropagation()
+        e.preventDefault()
       }
     })   
   }
@@ -390,8 +383,8 @@ span.keycap {
   position: absolute;
   width: 100%;
   background-color: #42424299;
-  margin-top: -250px;
-  animation: slideDown 2s ease 1s forwards;
+  margin-top: 250px;
+  animation: slideUp 2s ease 1s forwards;
 }
 
 @keyframes slideDown {
