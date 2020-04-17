@@ -8,6 +8,7 @@
     <link href="//cdn.jsdelivr.net/npm/@mdi/font@3.x/css/materialdesignicons.min.css" rel="stylesheet">
 
     <v-content pa-0 ma-0>
+
       <v-row class="align-top fill-height d-flex flex-nowrap" justify="center">
         <v-col style="position: relative">
           <ImagePane
@@ -19,14 +20,13 @@
           />
         </v-col>
 
+        <div v-if="points.length > 0" class="extra-options-box pa-2">
+          <v-checkbox :disabled="!warpedImage" @change="numToggles += 1" v-model="showWarpedImage" title="Try [spacebar] to toggle" label="Overlay Warped Image" />
+          <!--<v-checkbox :disabled="points.length < 4" v-model="autoWarp" title="Warp when points change" label="Auto-warp"/>-->
+        </div>
+
         <v-row style="position: relative" align="center" justify="center">
           <v-col ref="box" class="vertical-center" style="min-width: 350px">
-            <v-card v-if="points.length > 0" class="extra-options-box">
-              <v-card-text>
-                <v-checkbox :disabled="points.length < 4" v-model="autoWarp" title="Warp when points change" label="Auto-warp"/>
-                <v-checkbox :disabled="!warpedImage" @change="numToggles += 1" v-model="showWarpedImage" title="Try [spacebar] to toggle" label="Overlay Warped Image" />
-              </v-card-text>
-            </v-card>
             <v-card ripple elevation="10" class="overhang-column">
 
               <v-card-text>
@@ -325,10 +325,6 @@ ${pointLines}`
 }
 </script>
 
-<style src='vuetify/dist/vuetify.min.css'>
-  /* global styles */
-</style> 
-
 <style>
 .registration-task {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -377,12 +373,20 @@ span.keycap {
 }
 
 .extra-options-box {
-  animation: doFadeIn 2s ease forwards;
   position: absolute;
-  width: 100%;
-  background-color: #42424299;
-  margin-top: 250px;
+  bottom: 0px;
+  left: 1.5em;
+  animation: doFadeIn 2s ease forwards;
+  background-color: rgba(0,0,0,0);
   animation: slideUp 2s ease 1s forwards;
+}
+
+ .extra-options-box .v-messages {
+  display: none;
+}
+
+.v-messages {
+  display: none;
 }
 
 @keyframes slideDown {
