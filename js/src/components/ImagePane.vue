@@ -154,7 +154,7 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(() => this.handleResize())
+    setTimeout(() => this.$nextTick(() => this.handleResize()))
 
     /* We /want/ to see pixels, important for detailed high QC work */
     this.context.imageSmoothingEnabled = false
