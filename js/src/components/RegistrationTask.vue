@@ -8,8 +8,8 @@
     <link href="//cdn.jsdelivr.net/npm/@mdi/font@3.x/css/materialdesignicons.min.css" rel="stylesheet">
 
     <v-content pa-0 ma-0>
-      <v-row class="align-top fill-height" justify="center"  >
-        <v-col class="grow" style="position: relative">
+      <v-row class="align-top fill-height d-flex flex-nowrap" justify="center">
+        <v-col style="position: relative">
           <ImagePane
             :image="referenceImage"
             :warpedImage="warpedImage"
@@ -19,8 +19,8 @@
           />
         </v-col>
 
-        <div style="position: relative">
-          <div ref="box" class="vertical-center">
+        <v-row style="position: relative" align="center" justify="center">
+          <v-col ref="box" class="vertical-center" style="min-width: 350px">
             <v-card v-if="points.length > 0" class="extra-options-box">
               <v-card-text>
                 <v-checkbox :disabled="points.length < 4" v-model="autoWarp" title="Warp when points change" label="Auto-warp"/>
@@ -69,10 +69,10 @@
               <v-progress-linear indeterminate/>
             </div>
 
-          </div>
-        </div>
+          </v-col>
+        </v-row>
 
-        <v-col class="grow" style="position: relative">
+        <v-col style="position: relative">
           <ImagePane
             :image="imageryImage"
             :pointColor="imageryPointColor"
@@ -392,8 +392,6 @@ span.keycap {
 
 .vertical-center {
   position: absolute;
-  left: -135px;
-  right: -135px;
   bottom: 0;
   z-index: 10;
 }

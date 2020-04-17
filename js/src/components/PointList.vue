@@ -21,7 +21,7 @@
                     <v-btn 
                         v-else-if="showPredictBtns"
                         @click="extrapolate(index)" 
-                        flat small style="margin: 0"
+                        text small style="margin: 0"
                     >Predict</v-btn>
                 </td>
                 <td class="rmse-width" nowrap>
@@ -50,6 +50,6 @@ export default {
         min-width: 7em;
     }
     .rmse-width {
-        width: 4em;
+        min-width: 5em;
     }
 </style>
