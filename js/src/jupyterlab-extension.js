@@ -5,6 +5,11 @@ import { IJupyterWidgetRegistry } from '@jupyter-widgets/base'
 
 import { RejWidget, RejDOMWidget, RejModel } from './rej-widget'
 
+// Import the extension-entry.js without having our webpack
+// touch it. This file is designed for the SECOND webpack-ing,
+// Which will be done (whether we like it or not) by `jupyter lab build`.
+import '!file-loader?name=extension-entry.js!./extension-entry.js'
+
 window._debug = window._debug || {}
 
 const extension = {

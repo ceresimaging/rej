@@ -29,7 +29,6 @@ module.exports = {
       symlinks: false
     },
     plugins: [
-      new ThreadsPlugin()
     ],
     externals: [
       /^@jupyter-widgets\/.+$/,

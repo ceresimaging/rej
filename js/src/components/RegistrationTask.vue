@@ -108,6 +108,10 @@ import { zip_longest } from 'zip-array'
 import { spawn, Worker } from 'threads'
 import { save } from 'save-file'
 
+import DasWorker from 'worker-loader?name=warp-worker.js!../utils/warp-worker.js'
+
+window.dasworker = DasWorker
+
 window.Vuetify = Vuetify
 
 const components = {
@@ -120,6 +124,9 @@ export default {
   name: 'registration-task',
   props: ['referenceURL', 'imageryURL'],
   data() {
+    console.log("V5")
+    
+    debugger;
     return {
       referencePointColor: "#FFFF00",
       referencePoints: [],
@@ -136,7 +143,9 @@ export default {
       warping: false,
       showToggleHint: false,
       numImagesLoading: 0,
-      warpWorker: spawn(new Worker("../utils/warp-worker"))
+      warpWorker: spawn(new DasWorker()
+        //new Worker("../utils/warp-worker")
+      )
     }
   },
   components,
