@@ -3,9 +3,5 @@
 // build's webpack in $PYTHON_ENV/share/jupyter/lab/staging/build
 
 import * as WebpackedExtension from './ceresimaging-rej.umd.js'
-import * as WarpWorker from 'file-loader?name=warp-worker.js!./warp-worker.js'
-
-console.log("USING THE NEW NON-WEBPACKED ENTRY", WarpWorker)
-window.ww = WarpWorker
-
+import 'file-loader?name=warp-worker.js!./warp-worker.js'
 export default WebpackedExtension
