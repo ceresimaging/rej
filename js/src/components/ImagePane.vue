@@ -1,5 +1,5 @@
 <template>
-  <div ref="container" class="image-pane-container" v-resize="handleResize" fill-height>
+  <div ref="container" class="image-pane-container fill-height" v-resize="handleResize">
     <v-stage ref="stage" class="image-pane"
       :config="configKonva"
       @DOMMouseScroll="mouseWheelZoom"
@@ -51,8 +51,8 @@ export default {
     return {
       scale: 1,
       configKonva: {
-        width: 512,
-        height: 512,
+        width: 128,
+        height: 128,
         draggable: true,
       },
       points: []
@@ -126,8 +126,9 @@ export default {
       stage.batchDraw()
     },
     handleResize() {
-      this.stage.width(this.$refs.container.clientWidth-2)
-      this.stage.height(window.innerHeight)
+      console.log(`Width: ${this.$refs.container.clientWidth}`)
+      this.stage.width(this.$refs.container.clientWidth)
+      this.stage.height(this.$refs.container.clientHeight)
       this.scaleToFit()
     },
   },

@@ -7,17 +7,16 @@
     <link href="//fonts.googleapis.com/css?family=Material+Icons" rel="stylesheet">
     <link href="//cdn.jsdelivr.net/npm/@mdi/font@3.x/css/materialdesignicons.min.css" rel="stylesheet">
 
-    <v-content pa-0 ma-0>
-
+    <v-content class="pa-0 ma-0 fill-height">
       <v-row class="align-top fill-height d-flex flex-nowrap" justify="center">
-        <v-col class="pa-0" style="position: relative">
+        <v-col class="pa-0 fill-height" style="position: relative">
           <ImagePane
             :image="imageryImage"
             :pointColor="imageryPointColor"
             @points-changed="imageryPoints = $event"
           />
         </v-col>
-        <v-col class="pa-0" style="position: relative">
+        <v-col class="pa-0 fill-height" style="position: relative">
           <ImagePane
             :image="referenceImage"
             :warpedImage="warpedImage"
@@ -275,7 +274,6 @@ ${pointLines}`
   },
   watch: {
     imageryURL () {
-      console.log("IT CHANGED YES YES YES YES YES", this.imageryURL)
       this.loadImage(this.imageryURL, 'imageryImage')
     },
     referenceURL() {
@@ -344,10 +342,11 @@ ${pointLines}`
   position: relative;
 }
 
-.jp-Cell .registration-task {
+.jp-Cell .registration-task .v-application--wrap {
   /* We're in a Jupyter Cell, limit height to 90% of the browser window height
-  minus 200 pixels for jupyterlab chrome */
- /*max-height: calc(90vh - 200px);*/
+  minus 100 pixels for jupyterlab chrome */
+  height: calc(90vh - 150px);
+  min-height: 350px;
 }
 
 .registration-task .application--wrap {
