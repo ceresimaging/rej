@@ -4,12 +4,12 @@
   "version": "0.1.0",
   "license": "MIT",
   "scripts": {
-    "build": "vue-cli-service build --target lib --inline-vue --modern ./src/jupyterlab-extension.js",
-    "watch": "vue-cli-service build --watch --target lib --inline-vue --modern ./src/jupyterlab-extension.js",
+    "build": "vue-cli-service build --target lib --inline-vue --modern ./js/jupyterlab-extension.js",
+    "watch": "vue-cli-service build --watch --target lib --inline-vue --modern ./js/jupyterlab-extension.js",
     "jupyterlab": "jupyter labextension link . --no-build && jupyter lab --watch",
     "lint": "vue-cli-service lint",
-    "build:app": "vue-cli-service build ./src/main.js",
-    "serve": "vue-cli-service serve --target app ./src/main.js"
+    "build:app": "vue-cli-service build ./js/main.js",
+    "serve": "vue-cli-service serve --target app ./js/main.js"
   },
   "main": "dist/extension-entry.js",
   "dependencies": {
