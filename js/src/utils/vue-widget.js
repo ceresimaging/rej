@@ -5,7 +5,6 @@ export class VueWidget extends DOMWidgetView {
     super(...args)
 
     const props = this.computedProps(this.model.attributes)
-    const self = this
 
     let Vue = this.getVue()
     const options = Vue.options
@@ -19,14 +18,10 @@ export class VueWidget extends DOMWidgetView {
       },
       render(h) {
         const [ App, data, ...rest ] = options.render((..._) => _)
-        const result = h(App, {
+        return h(App, {
           ...data,
           props: this.props,
         }, ...rest)
-
-        const changed = data ? data.props : {}
-        self.syncToVue({ changed })
-        return result
       }
     })
     this.vm = new Vue()
@@ -35,7 +30,7 @@ export class VueWidget extends DOMWidgetView {
   syncToVue({ changed: props }) {
     props = this.computedProps(props)
     for (let [key, value] of Object.entries(props)) {
-      this.vm.props[key] = value
+      if (value) this.vm.props[key] = value
     }
   }
   render() {

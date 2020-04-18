@@ -125,7 +125,7 @@ const components = {
 
 export default {
   name: 'rej',
-  props: ['referenceURL', 'imageryURL'],
+  props: ['referenceURL', 'imageryURL', 'ptsCallback'],
   data() {
     return {
       referencePointColor: "#ed588d",
@@ -196,8 +196,14 @@ export default {
     },
     async savePTS () {
       const { pts, imageryURL } = this
-      const filename = imageryURL.substring(imageryURL.lastIndexOf('/')+1) + ".pts"
-      await save(pts, filename)
+      const filename = imageryURL ? imageryURL.substring(imageryURL.lastIndexOf('/')+1) + ".pts" : "gcps.pts"
+      if (this.ptsCallback) {
+        console.log("Calling bback")
+        this.ptsCallback(pts, filename)
+      } else {
+        await save(pts, filename)
+      }
+      
     },
     async calculateTransform () {
       const warpWorker = await this.warpWorker

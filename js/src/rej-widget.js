@@ -10,10 +10,19 @@ const toLabURL = (localPath) => localPath ? `${PageConfig.getBaseUrl()}files/${l
 
 export class RejWidget extends VueWidget {
   computedProps(props) {
+    window.rej = this
     return {
       ...props,
       imageryURL: toLabURL(props.imageryPath),
       referenceURL: toLabURL(props.referencePath),
+      ptsCallback: ptsFile => {
+        debugger;
+        console.log("Sending it by message")
+        this.send({ ptsFile })
+
+        // TODO: why isn't model.set working?????
+        this.model.set('ptsFile', ptsFile)
+      }
     }
   }
   getVue() { 
