@@ -1,4 +1,4 @@
-from ipywidgets import DOMWidget, trait_types, Output
+from ipywidgets import DOMWidget, trait_types, Output, VBox, Textarea
 from traitlets import Unicode, Int
 
 from concurrent.futures import ThreadPoolExecutor
@@ -31,11 +31,12 @@ class Rej(DOMWidget):
     #imagery = trait_types.CByteMemoryView(help="The media data as a memory view of bytes.").tag(sync=True)
     #reference = trait_types.CByteMemoryView(help="The media data as a memory view of bytes.").tag(sync=True)
 
-    def __init__(self, img, reference_img, *args, **kwargs):
+    def __init__(self, img, reference_img, save_pts_callback=None, *args, **kwargs):
         super(Rej, self).__init__(*args, **kwargs)
 
+        self.save_pts_callback = save_pts_callback
         self.on_msg(self.save_pts)
-        print("I'm Handeling this!")
+
         #import /ipdb; ipdb.set_trace()
         def convert_and_save(save_to_attr, path):
             try:
@@ -57,22 +58,29 @@ class Rej(DOMWidget):
         self.observe(observer, 'ptsFile')
 
     def save_pts(self, widget, content, buffers):
-        print("save_pts()", file=sys.stderr)
-        with open('/tmp/savepts.pro.log', 'w') as f:
-            f.write("YOYO\n")
-            f.write(str(widget))
-            f.write(str(content))
         if 'ptsFile' in content:
-            with open('/tmp/gcps_savepts.pro.pts', 'w') as f:
-                f.write(content['ptsFile'])
-                print("Saved PTS!", file=sys.stderr)
-            from IPython.display import display, HTML
-            out = Output()
-            display(out)
-            out.append_display_data(HTML("<em>All done!</em>"))
-            out.append_display_data(HTML(f"<pre>{ptsFile}</pre>"))
+            ptsFile = content['ptsFile']
+            
+            if self.save_pts_callback:
+                self.save_pts_callback(ptsFile)
 
-def rej(img, reference_img):
-    return Rej(img, reference_img)
+            with open('/tmp/gcps_savepts.pro.pts', 'w') as f:
+                f.write(ptsFile)
+                print("Saved PTS!", file=sys.stderr)
+
+
+
+def rej(img, reference_img, pts_callback=None):
+    def _cb(pts):
+        if pts_callback:
+            pts_callback(pts, rej, box)
+        else:
+            out = Output()
+            box.children = tuple(list(box.children) + [out])
+            out.append_stdout(pts)
+
+    rej = Rej(img, reference_img, _cb)
+    box = VBox([ rej ])
+    return box
 
 register = rej
