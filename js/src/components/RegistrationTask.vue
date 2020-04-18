@@ -28,9 +28,8 @@
         </v-col>
       </v-row>
       
-      <div style="position: relative" align="center" justify="center">
-        <v-col ref="box" class="vertical-center">
-          <v-card ripple elevation="2" class="overhang-column" style="min-width: 350px">
+
+          <v-card class="vertical-center" ripple elevation="2"  style="width: 14em">
 
             <v-card-text>
               <PointList 
@@ -46,7 +45,10 @@
               </div>
             </v-card-text>
             
-            <v-card-actions>
+
+          </v-card>
+
+            <v-card-actions style="position: absolute; right: 10px; bottom: 10px">
               <v-btn
                 color="primary"
                 @click="warp"
@@ -64,16 +66,12 @@
                 Save PTS (s)
               </v-btn>
             </v-card-actions>
-          </v-card>
-
 
           <div v-if="numImagesLoading > 0" style="margin-top: 1em">
             <label>Downloading Image(s)...</label>
             <v-progress-linear indeterminate/>
           </div>
 
-        </v-col>
-      </div>
 
       <div v-if="points.length > 0" class="extra-options-box pa-2">
         <v-checkbox :disabled="!warpedImage" @change="numToggles += 1" v-model="showWarpedImage" title="Try [spacebar] to toggle" label="Overlay Warped Image" />
@@ -129,9 +127,9 @@ export default {
   props: ['referenceURL', 'imageryURL'],
   data() {
     return {
-      referencePointColor: "#FFFF00",
+      referencePointColor: "#ed588d",
       referencePoints: [],
-      imageryPointColor: "#00FFFF",
+      imageryPointColor: "#0a7bff",
       imageryPoints: [],
       rmse: [],
       transform: null,
@@ -394,8 +392,9 @@ span.keycap {
 
 .vertical-center {
   position: absolute;
-  bottom: 0;
+  bottom: 10px;
+  left: 10px;
   z-index: 10;
-  width: 0px
+  text-align: left;
 }
 </style>

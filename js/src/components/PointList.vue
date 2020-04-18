@@ -1,36 +1,44 @@
 <template>
     <div>
-        <table width=100%>
-            <tr>
-                <td></td>
-                <td :style="{color: imageryPointColor}">Image</td>
-                <td :style="{color: referencePointColor}">Reference</td>
-                <td>RMSE</td>
-            </tr>
-            <tr v-for="([p1, p2, rmse], index) of points" v-bind:key="index">
-                <td style="padding-right: 10px">{{index+1}}</td>
-                <td class="point-width" nowrap>
-                    <span v-if="p1">
-                        ({{Math.round(p1.x)}}, {{Math.round(p1.y)}})
-                    </span>
-                </td>
-                <td class="point-width" nowrap>
-                    <span v-if="p2">
-                        ({{Math.round(p2.x)}}, {{Math.round(p2.y)}})
-                    </span>
-                    <v-btn 
-                        v-else-if="showPredictBtns"
-                        @click="extrapolate(index)" 
-                        text small style="margin: 0"
-                    >Predict</v-btn>
-                </td>
-                <td class="rmse-width" nowrap>
-                    <span v-if="rmse" style="{ color: 'red'}">
-                        {{rmse.toExponential(2)}}
-                    </span>
-                </td>
-            </tr>
-        </table>
+        <div class="point-row"
+            v-for="([p1, p2, rmse], index) of points"
+            v-bind:key="index"
+        >
+            <div class="num"><b>{{index+1}}</b></div>
+            <div class="point" v-if="p1">
+                <div class="dot" :style="{color: imageryPointColor}">⬤</div>
+                <div class="coordinates">
+                    <div class="dot" :style="{color: imageryPointColor}">⬤</div>
+                    ( {{Math.round(p1.x)}}, {{Math.round(p1.y)}} )
+                </div>
+            </div>
+            <div class="point" v-if="p2">
+                <div class="dot" :style="{color: referencePointColor}">⬤</div>
+                <div class="coordinates">
+                    <div class="dot" :style="{color: referencePointColor}">⬤</div>
+                    ( {{Math.round(p2.x)}}, {{Math.round(p2.y)}} )
+                    
+                </div>
+            </div>
+            <v-btn
+                v-else-if="showPredictBtns"
+                @click="predictPoint(index)" 
+                text small style="margin: 0"
+            >Predict</v-btn>
+            <div
+                class="rmse"
+                v-if="rmse"
+                :style="{ color: `rgba(255,0,0,${magnitude(rmse)})` }"
+                :title="`RMSE: ${rmse.toExponential(2)}`"
+            >
+                {{Math.round(magnitude(rmse)*10)}}
+            </div>
+            <v-btn
+                class="delete-point-pair"
+                @click="deletePointPair(index)" 
+                text small rounded style="margin: 0;"
+            >✕</v-btn>
+        </div>
     </div>
 </template>
 
@@ -38,18 +46,96 @@
 export default {
     props: ['points', 'referencePointColor', 'imageryPointColor', 'showPredictBtns'],
     methods: {
-        extrapolate(index) {
+        predictPoint(index) {
             this.$emit("predict-point", index)
+        },
+        deletePointPair(index) {
+            console.log("Deleting: ", index)
+            this.$emit("delete-point-pair", index)
+        },
+        magnitude(num) {
+            const clamp = (a,b,c) => Math.max(b,Math.min(c,a))
+            const MAXOUT = 1.0
+            const MINOUT = 0
+            const MAXIN = 2
+            const MININ = -3
+            let magnitude = Math.log(num)
+            //console.log("num: ", num)
+            //console.log("magnitude: ", magnitude)
+            magnitude = clamp(magnitude, MININ, MAXIN)
+            //console.log("clamped: ", magnitude)
+            magnitude += MINOUT - MININ
+            magnitude *= (MAXOUT - MINOUT) / (MAXIN - MININ)
+            //console.log("scaled: ", magnitude)
+            //magnitude = Math.round(magnitude)
+            //console.log("rounded: ", magnitude)
+            return magnitude
         }
     },
 }
 </script>
 
-<style>
-    .point-width {
-        min-width: 7em;
+<style lang="scss">
+    .delete-point-pair:hover {
+        color: red;
     }
-    .rmse-width {
-        min-width: 5em;
+    .delete-point-pair {
+        padding-left: 10px!important;
+        padding-right: 10px!important;
+        min-width: 0px!important;
+    }
+    .point-row > div {
+        display: inline-block;
+    }
+    $dot-shadow: rgba(0,0,0,0.1);
+    $dot-outline: rgba(0,0,0,0.3);
+    .dot {
+        text-shadow: -1px 0 $dot-shadow, 0 1px $dot-shadow, 1px 0 $dot-shadow, 0 -1px $dot-shadow;
+        display: inline-block;
+        padding-left: 5px;
+    }
+    .point {
+        cursor: default;
+        position: relative;
+    }
+    $tooltip-bgcolor: rgb(220,220,220);
+    .point .coordinates {
+        position: absolute;
+        left: 0px;
+        height: 100%;
+        z-index: 1;
+
+        display: inline-block;
+        background-color: $tooltip-bgcolor;        
+        
+        padding-right: 5px;
+        border-radius: 5px;
+
+        transition: all 0.5s ease-out;
+        visibility: hidden;
+        opacity: 0;
+
+        white-space: nowrap;
+    }
+    .point:hover .coordinates {
+        opacity: 1;
+        visibility: visible;
+        transition: all 0.2s ease-in;
+    }
+    .point .delete {
+        display: inline-block;
+        font-size: 120%;
+        padding-left: 5px;
+        padding-right: 5px;
+        transition: all 1s ease-out;
+        font-weight: bold;
+    }
+    .point .delete:hover {
+        background-color: red;
+        transition: all 1s ease-in;
+    }
+    .rmse {
+        padding-left: 5px;
+        cursor: default;
     }
 </style>
