@@ -1,5 +1,5 @@
 <template>
-  <div ref="container" class="image-pane-container" v-resize="handleResize">
+  <div ref="container" class="image-pane-container" v-resize="handleResize" fill-height>
     <v-stage ref="stage" class="image-pane"
       :config="configKonva"
       @DOMMouseScroll="mouseWheelZoom"
@@ -127,11 +127,7 @@ export default {
     },
     handleResize() {
       this.stage.width(this.$refs.container.clientWidth-2)
-
-      // Set the height of the whole widget
-      // this.stage.height(window.innerHeight-2)
-      console.log((window.innerHeight * 0.9) - 200)
-      this.stage.height((window.innerHeight * 0.9) - 200)
+      this.stage.height(window.innerHeight)
       this.scaleToFit()
     },
   },

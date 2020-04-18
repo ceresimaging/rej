@@ -5,26 +5,26 @@
             v-bind:key="index"
         >
             <div class="num"><b>{{index+1}}</b></div>
-            <div class="point" v-if="p1">
-                <div class="dot" :style="{color: imageryPointColor}">⬤</div>
-                <div class="coordinates">
+            <div class="point">
+                <div class="dot" :style="{color: p1 ? imageryPointColor : '#eee' }">⬤</div>
+                <div class="coordinates" v-if="p1">
                     <div class="dot" :style="{color: imageryPointColor}">⬤</div>
                     ( {{Math.round(p1.x)}}, {{Math.round(p1.y)}} )
                 </div>
-            </div>
-            <div class="point" v-if="p2">
-                <div class="dot" :style="{color: referencePointColor}">⬤</div>
-                <div class="coordinates">
+            </div> 
+            <div class="point" >
+                <div class="dot" :style="{color: p2 ? referencePointColor : '#eee' }">⬤</div>
+                <div class="coordinates" v-if="p2">
                     <div class="dot" :style="{color: referencePointColor}">⬤</div>
                     ( {{Math.round(p2.x)}}, {{Math.round(p2.y)}} )
                     
                 </div>
             </div>
-            <v-btn
+            <!--<v-btn
                 v-else-if="showPredictBtns"
                 @click="predictPoint(index)" 
                 text small style="margin: 0"
-            >Predict</v-btn>
+            >Predict</v-btn>-->
             <v-btn
                 class="delete-point-pair"
                 @click="deletePointPair(index)" 
@@ -87,6 +87,8 @@ export default {
         padding-left: 10px!important;
         padding-right: 10px!important;
         min-width: 0px!important;
+        position: relative;
+        left: 5px;
     }
     .point-row {
         position: relative;
@@ -128,19 +130,6 @@ export default {
         opacity: 1;
         visibility: visible;
         transition: all 0.2s ease-in;
-    }
-    .point .delete {
-        display: inline-block;
-        font-size: 120%;
-        padding-left: 5px;
-        padding-right: 5px;
-        transition: all 1s ease-out;
-        font-weight: bold;
-        margin-left: 5px;
-    }
-    .point .delete:hover {
-        background-color: red;
-        transition: all 1s ease-in;
     }
     .rmse {
         padding-left: 5px;

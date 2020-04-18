@@ -44,36 +44,39 @@
         </v-card-text>
       </v-card>
 
-      <div style="position: absolute; right: 10px; bottom: 10px">
+      <div style="position: absolute; right: 10px; bottom: 0px">
         <div v-if="numImagesLoading > 0">
           <label>Downloading Image(s)...</label>
           <v-progress-linear indeterminate/>
         </div>
         <v-card-actions v-else >
           <v-btn
-            color="primary"
+            :color="warpedImage ? 'secondary' : 'primary'"
             @click="warp"
             :disabled="!canWarp"
             :loading="warping"
           >
             Warp (w)
           </v-btn>
-          <v-btn 
+          <v-btn
+            color="primary"
             @click="savePTS"
             :disabled="points.length <= 3"
             flat
             v-if="warpedImage"
           >
-            Save PTS (s)
+            Save (s)
           </v-btn>
         </v-card-actions>
       </div>
 
 
 
-      <div v-if="points.length > 0" class="extra-options-box pa-2">
-        <v-checkbox :disabled="!warpedImage" @change="numToggles += 1" v-model="showWarpedImage" title="Try [spacebar] to toggle" label="Overlay Warped Image" />
-        <!--<v-checkbox :disabled="points.length < 4" v-model="autoWarp" title="Warp when points change" label="Auto-warp"/>-->
+      <div v-if="warpedImage">
+        <div class="extra-options-box">
+          <v-checkbox @change="numToggles += 1" v-model="showWarpedImage" title="Try [spacebar] to toggle" label="Overlay Warp" />
+          <!--<v-checkbox :disabled="points.length < 4" v-model="autoWarp" title="Warp when points change" label="Auto-warp"/>-->
+        </div>
       </div>
 
       <v-snackbar
@@ -340,7 +343,7 @@ ${pointLines}`
 }
 </style>
 
-<style scoped>
+<style>
 
 .overhang-column {
   margin-left: -20px;
@@ -368,20 +371,13 @@ span.keycap {
 
 .extra-options-box {
   position: absolute;
-  bottom: 0px;
-  left: 1.5em;
-  animation: doFadeIn 2s ease forwards;
+  top: 0px;
+  right: 1.5em;
   background-color: rgba(0,0,0,0);
-  animation: slideUp 2s ease 1s forwards;
+  margin-top: -250px;
+  animation: slideDown 2s ease 1s forwards;
 }
 
- .extra-options-box .v-messages {
-  display: none;
-}
-
-.v-messages {
-  display: none;
-}
 
 @keyframes slideDown {
   from { margin-top: -250px; }
