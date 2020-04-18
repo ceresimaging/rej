@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 EXTENSION_VERSION="0.1.0"
 
 class Rej(DOMWidget):
-    _view_name = Unicode('RejDOMWidget').tag(sync=True)
+    _view_name = Unicode('RejWidget').tag(sync=True)
     _model_name = Unicode('RejModel').tag(sync=True)
     _view_module = Unicode('ceresimaging-rej').tag(sync=True)
     _model_module = Unicode('ceresimaging-rej').tag(sync=True)
@@ -34,7 +34,6 @@ class Rej(DOMWidget):
                 setattr(self, save_to_attr, geotiff_to_png(path)[0])
             except:
                 logger.exception()
-                print("YOOOO ADDDDD BBADDDD")
 
         # TODO: use self.imagery and self.reference to pass this entirely
         # in memory, saving the slowness of writing out to S3!
@@ -44,7 +43,7 @@ class Rej(DOMWidget):
         t2.start()
         t1.join()
         t2.join()
-
+        
 def rej(img, reference_img):
     return Rej(img, reference_img)
 
