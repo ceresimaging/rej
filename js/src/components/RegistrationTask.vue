@@ -382,7 +382,7 @@ span.keycap {
   right: 1.5em;
   background-color: rgba(0,0,0,0);
   margin-top: -250px;
-  animation: slideDown 2s ease 1s forwards;
+  animation: slideDown ease 1s forwards;
 }
 
 
