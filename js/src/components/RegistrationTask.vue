@@ -35,6 +35,7 @@
             :showPredictBtns="false && canWarp"
             :points="points" 
             @predict-point="predictPoint"
+            @delete-point-pair="deletePointPair"
             :referencePointColor="referencePointColor" 
             :imageryPointColor="imageryPointColor"
           />
@@ -158,6 +159,10 @@ export default {
       }
       Vue.set(this.imageryPoints, pointNum, transformedPoint)
     },
+    deletePointPair (index) {
+      this.imageryPoints.splice(index, 1)
+      this.referencePoints.splice(index, 1)
+    },
     loadImage (url, prop) {
       if (!url) return 
 
@@ -244,7 +249,9 @@ export default {
       return this.points.filter(([p1, p2, rmse]) => p1 && p2).length >= 4
     },
     points() {
-      return zip_longest(this.imageryPoints, this.referencePoints, this.rmse)
+      const shortestPointsLen = Math.min(this.imageryPoints.length, this.referencePoints.length)
+      const rmse = this.rmse.slice(0, shortestPointsLen)
+      return zip_longest(this.imageryPoints, this.referencePoints, rmse)
     },
     signedIn() {
       return this.$localStorage.idToken && Date.now() < this.$localStorage.authExpiresAt

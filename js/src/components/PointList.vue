@@ -54,7 +54,6 @@ export default {
             this.$emit("predict-point", index)
         },
         deletePointPair(index) {
-            console.log("Deleting: ", index)
             this.$emit("delete-point-pair", index)
         },
         magnitude(num) {
