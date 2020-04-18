@@ -164,7 +164,9 @@ export default {
       this.referencePoints.splice(index, 1)
     },
     loadImage (url, prop) {
-      if (!url) return 
+      if (!url) return
+
+      console.log(`loadImage(${url}, ${prop})`)
 
       this.numImagesLoading++
       if (url.includes('.tif') && !url.includes('.png')) {
@@ -272,6 +274,12 @@ ${pointLines}`
    },
   },
   watch: {
+    imageryURL () {
+      this.loadImage(this.imageryURL, 'imageryImage')
+    },
+    referenceURL() {
+      this.loadImage(this.referenceURL, 'referenceImage')
+    },
     numToggles(val) {
       this.showToggleHint = val > 3
     },
@@ -286,15 +294,11 @@ ${pointLines}`
         this.handlePointsChanged()
       },
       deep: true
-    }
-
+    },
   },
-  created () {
-    const { imageryURL, referenceURL } = this
-    console.log("imageryURL: ", imageryURL)
-    console.log("referenceURL: ", referenceURL)
-    this.loadImage(imageryURL, 'imageryImage')
-    this.loadImage(referenceURL, 'referenceImage')
+  created() {
+    this.loadImage(this.imageryURL, 'imageryImage')
+    this.loadImage(this.referenceURL, 'referenceImage')
   },
   mounted() {
     document.addEventListener("keydown", (e) => {

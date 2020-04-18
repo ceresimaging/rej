@@ -9,7 +9,16 @@ export default function createApp(props={}) {
   return new Vue({
     vuetify,
     store,
-    render: h => h(App, { props })
+    data () {
+      return {
+        props
+      }
+    },
+    render(h) {
+      return h(App, { 
+        props: this.props 
+      })
+    }
   })
 }
 
