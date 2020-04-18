@@ -25,6 +25,15 @@
                 @click="predictPoint(index)" 
                 text small style="margin: 0"
             >Predict</v-btn>
+            <v-btn
+                class="delete-point-pair"
+                @click="deletePointPair(index)" 
+                text small rounded style="margin: 0;"
+            >
+                ✕
+            </v-btn>
+
+
             <div
                 class="rmse"
                 v-if="rmse"
@@ -33,11 +42,6 @@
             >
                 {{Math.round(magnitude(rmse)*10)}}
             </div>
-            <v-btn
-                class="delete-point-pair"
-                @click="deletePointPair(index)" 
-                text small rounded style="margin: 0;"
-            >✕</v-btn>
         </div>
     </div>
 </template>
@@ -84,6 +88,9 @@ export default {
         padding-right: 10px!important;
         min-width: 0px!important;
     }
+    .point-row {
+        position: relative;
+    }
     .point-row > div {
         display: inline-block;
     }
@@ -129,6 +136,7 @@ export default {
         padding-right: 5px;
         transition: all 1s ease-out;
         font-weight: bold;
+        margin-left: 5px;
     }
     .point .delete:hover {
         background-color: red;
@@ -137,5 +145,10 @@ export default {
     .rmse {
         padding-left: 5px;
         cursor: default;
+        position: absolute;
+        right: -70px;
+        top: 0px;
+        width: 50px;
+        text-align: left;
     }
 </style>

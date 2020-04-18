@@ -28,49 +28,47 @@
         </v-col>
       </v-row>
       
-
-          <v-card class="vertical-center" ripple elevation="2"  style="width: 14em">
-
-            <v-card-text>
-              <PointList 
-                v-if="points.length > 0" 
-                :showPredictBtns="canWarp"
-                :points="points" 
-                @predict-point="predictPoint"
-                :referencePointColor="referencePointColor" 
-                :imageryPointColor="imageryPointColor"
-              />
-              <div v-else>
-                <span style="font-style: italic; color: #aaa">Click matching features on the left and right to georeference right image.</span>
-              </div>
-            </v-card-text>
-            
-
-          </v-card>
-
-            <v-card-actions style="position: absolute; right: 10px; bottom: 10px">
-              <v-btn
-                color="primary"
-                @click="warp"
-                :disabled="!canWarp"
-                :loading="warping"
-              >
-                Warp (w)
-              </v-btn>
-              <v-btn 
-                @click="savePTS"
-                :disabled="points.length <= 3"
-                flat
-                v-if="warpedImage"
-              >
-                Save PTS (s)
-              </v-btn>
-            </v-card-actions>
-
-          <div v-if="numImagesLoading > 0" style="margin-top: 1em">
-            <label>Downloading Image(s)...</label>
-            <v-progress-linear indeterminate/>
+      <v-card class="vertical-center" ripple elevation="2">
+        <v-card-text>
+          <PointList 
+            v-if="points.length > 0" 
+            :showPredictBtns="false && canWarp"
+            :points="points" 
+            @predict-point="predictPoint"
+            :referencePointColor="referencePointColor" 
+            :imageryPointColor="imageryPointColor"
+          />
+          <div v-else style="font-style: italic; color: #aaa; max-width: 15em;">
+            Click matching features on the left and right to georeference right image.
           </div>
+        </v-card-text>
+      </v-card>
+
+      <div style="position: absolute; right: 10px; bottom: 10px">
+        <div v-if="numImagesLoading > 0">
+          <label>Downloading Image(s)...</label>
+          <v-progress-linear indeterminate/>
+        </div>
+        <v-card-actions v-else >
+          <v-btn
+            color="primary"
+            @click="warp"
+            :disabled="!canWarp"
+            :loading="warping"
+          >
+            Warp (w)
+          </v-btn>
+          <v-btn 
+            @click="savePTS"
+            :disabled="points.length <= 3"
+            flat
+            v-if="warpedImage"
+          >
+            Save PTS (s)
+          </v-btn>
+        </v-card-actions>
+      </div>
+
 
 
       <div v-if="points.length > 0" class="extra-options-box pa-2">
