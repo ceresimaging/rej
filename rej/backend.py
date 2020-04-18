@@ -28,7 +28,7 @@ class Rej(DOMWidget):
 
     def __init__(self, img, reference_img, *args, **kwargs):
         super(Rej, self).__init__(*args, **kwargs)
-        #import ipdb; ipdb.set_trace()
+
         def convert_and_save(save_to_attr, path):
             try:
                 setattr(self, save_to_attr, geotiff_to_png(path)[0])
@@ -41,8 +41,6 @@ class Rej(DOMWidget):
         t2 = threading.Thread(target=convert_and_save, args=('referencePath', reference_img))
         t1.start()
         t2.start()
-        #t1.join()
-        #t2.join()
 
 def rej(img, reference_img):
     return Rej(img, reference_img)
