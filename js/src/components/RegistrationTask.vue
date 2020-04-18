@@ -10,7 +10,14 @@
     <v-content pa-0 ma-0>
 
       <v-row class="align-top fill-height d-flex flex-nowrap" justify="center">
-        <v-col style="position: relative">
+        <v-col class="pa-0" style="position: relative">
+          <ImagePane
+            :image="imageryImage"
+            :pointColor="imageryPointColor"
+            @points-changed="imageryPoints = $event"
+          />
+        </v-col>
+        <v-col class="pa-0" style="position: relative">
           <ImagePane
             :image="referenceImage"
             :warpedImage="warpedImage"
@@ -19,67 +26,59 @@
             @points-changed="referencePoints = $event" 
           />
         </v-col>
-
-        <div v-if="points.length > 0" class="extra-options-box pa-2">
-          <v-checkbox :disabled="!warpedImage" @change="numToggles += 1" v-model="showWarpedImage" title="Try [spacebar] to toggle" label="Overlay Warped Image" />
-          <!--<v-checkbox :disabled="points.length < 4" v-model="autoWarp" title="Warp when points change" label="Auto-warp"/>-->
-        </div>
-
-        <v-row style="position: relative" align="center" justify="center">
-          <v-col ref="box" class="vertical-center" style="min-width: 350px">
-            <v-card ripple elevation="10" class="overhang-column">
-
-              <v-card-text>
-                <PointList 
-                  v-if="points.length > 0" 
-                  :showPredictBtns="canWarp"
-                  :points="points" 
-                  @predict-point="predictPoint"
-                  :referencePointColor="referencePointColor" 
-                  :imageryPointColor="imageryPointColor"
-                />
-                <div v-else>
-                  <span style="font-style: italic; color: #aaa">Click matching features on the left and right to georeference right image.</span>
-                </div>
-              </v-card-text>
-              
-              <v-card-actions>
-                <v-btn
-                  color="primary"
-                  @click="warp"
-                  :disabled="!canWarp"
-                  :loading="warping"
-                >
-                  Warp (w)
-                </v-btn>
-                <v-btn 
-                  @click="savePTS"
-                  :disabled="points.length <= 3"
-                  flat
-                  v-if="warpedImage"
-                >
-                  Save PTS (s)
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-
-
-            <div v-if="numImagesLoading > 0" style="margin-top: 1em">
-              <label>Downloading Image(s)...</label>
-              <v-progress-linear indeterminate/>
-            </div>
-
-          </v-col>
-        </v-row>
-
-        <v-col style="position: relative">
-          <ImagePane
-            :image="imageryImage"
-            :pointColor="imageryPointColor"
-            @points-changed="imageryPoints = $event"
-          />
-        </v-col>
       </v-row>
+      
+      <div style="position: relative" align="center" justify="center">
+        <v-col ref="box" class="vertical-center">
+          <v-card ripple elevation="2" class="overhang-column" style="min-width: 350px">
+
+            <v-card-text>
+              <PointList 
+                v-if="points.length > 0" 
+                :showPredictBtns="canWarp"
+                :points="points" 
+                @predict-point="predictPoint"
+                :referencePointColor="referencePointColor" 
+                :imageryPointColor="imageryPointColor"
+              />
+              <div v-else>
+                <span style="font-style: italic; color: #aaa">Click matching features on the left and right to georeference right image.</span>
+              </div>
+            </v-card-text>
+            
+            <v-card-actions>
+              <v-btn
+                color="primary"
+                @click="warp"
+                :disabled="!canWarp"
+                :loading="warping"
+              >
+                Warp (w)
+              </v-btn>
+              <v-btn 
+                @click="savePTS"
+                :disabled="points.length <= 3"
+                flat
+                v-if="warpedImage"
+              >
+                Save PTS (s)
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+
+
+          <div v-if="numImagesLoading > 0" style="margin-top: 1em">
+            <label>Downloading Image(s)...</label>
+            <v-progress-linear indeterminate/>
+          </div>
+
+        </v-col>
+      </div>
+
+      <div v-if="points.length > 0" class="extra-options-box pa-2">
+        <v-checkbox :disabled="!warpedImage" @change="numToggles += 1" v-model="showWarpedImage" title="Try [spacebar] to toggle" label="Overlay Warped Image" />
+        <!--<v-checkbox :disabled="points.length < 4" v-model="autoWarp" title="Warp when points change" label="Auto-warp"/>-->
+      </div>
 
       <v-snackbar
         v-model="showToggleHint"
@@ -246,15 +245,15 @@ export default {
       return this.points.filter(([p1, p2, rmse]) => p1 && p2).length >= 4
     },
     points() {
-      return zip_longest(this.referencePoints, this.imageryPoints, this.rmse)
+      return zip_longest(this.imageryPoints, this.referencePoints, this.rmse)
     },
     signedIn() {
       return this.$localStorage.idToken && Date.now() < this.$localStorage.authExpiresAt
     },
     pts() {
       const pointLines = this.points
-        .filter(([base, warp]) => base && warp)
-        .map(([base, warp]) => `\t${base.x}\t${base.y}\t${warp.x}\t${warp.y}`).join('\n')
+        .filter(([warp, base]) => base && warp)
+        .map(([warp, base]) => `\t${base.x}\t${base.y}\t${warp.x}\t${warp.y}`).join('\n')
       const pts = `
 ; ENVI Image to Image GCP File
 ; base file: ${this.referenceURL}
@@ -331,7 +330,6 @@ ${pointLines}`
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
   position: relative;
 }
 
@@ -398,5 +396,6 @@ span.keycap {
   position: absolute;
   bottom: 0;
   z-index: 10;
+  width: 0px
 }
 </style>

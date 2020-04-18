@@ -3,19 +3,19 @@
         <table width=100%>
             <tr>
                 <td></td>
-                <td>Ref</td>
-                <td>Image</td>
+                <td :style="{color: imageryPointColor}">Image</td>
+                <td :style="{color: referencePointColor}">Reference</td>
                 <td>RMSE</td>
             </tr>
             <tr v-for="([p1, p2, rmse], index) of points" v-bind:key="index">
                 <td style="padding-right: 10px">{{index+1}}</td>
                 <td class="point-width" nowrap>
-                    <span v-if="p1" :style="{color: referencePointColor}">
+                    <span v-if="p1">
                         ({{Math.round(p1.x)}}, {{Math.round(p1.y)}})
                     </span>
                 </td>
                 <td class="point-width" nowrap>
-                    <span v-if="p2" :style="{color: imageryPointColor}">
+                    <span v-if="p2">
                         ({{Math.round(p2.x)}}, {{Math.round(p2.y)}})
                     </span>
                     <v-btn 
