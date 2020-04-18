@@ -15,7 +15,7 @@ Eventually, a new GeoTIFF can be output, we're working on it 🤙🏽.
 You'll need both the JupyterLab widget, as well as the python library:
 
 ```
-jupyter labextension install juplab-rej
+jupyter labextension install ceresimaging-rej
 pip install rej
 ```
 
@@ -34,7 +34,7 @@ Most of Rej is written in Javascript/VueJS, which is then accessed through a thi
 Development will mostly take place inside the context of JupyterLab, so its nice to set things
 up so every time you save a file, the JupyterLab extension is updated:
 
-1. `pip install -r requirements.txt && pip install -e . && jupyter nbextension enable --py widgetsnbextension && jupyter labextension install --no-build @jupyter-widgets/jupyterlab-manager && cd ./js && npm install`
+1. `pip install -r requirements.txt && pip install -e . && jupyter nbextension enable --py widgetsnbextension && jupyter labextension install --no-build @jupyter-widgets/jupyterlab-manager && npm install`
 2. In one terminal: `npm run watch`
 3. In another terminal: `npm run jupyterlab`
 
@@ -43,5 +43,4 @@ up so every time you save a file, the JupyterLab extension is updated:
 If you're working on a feature/bug that doesn't require jupyterlab, you
 may prefer to develop inside Vue CLI's hot-reloading app mode. To do this:
 
-1. `cd ./js`
-2. `npm run serve`
+1. `npm run serve`
