@@ -8,8 +8,8 @@
     "watch": "vue-cli-service build --watch --target lib --inline-vue --modern ./src/jupyterlab-extension.js",
     "jupyterlab": "jupyter labextension link . --no-build && jupyter lab --watch",
     "lint": "vue-cli-service lint",
-    "build:app": "vue-cli-service build ./src/app.js",
-    "serve": "vue-cli-service serve --target app ./src/app.js"
+    "build:app": "vue-cli-service build ./src/main.js",
+    "serve": "vue-cli-service serve --target app ./src/main.js"
   },
   "main": "dist/extension-entry.js",
   "dependencies": {

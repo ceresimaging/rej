@@ -125,7 +125,7 @@ const components = {
 }
 
 export default {
-  name: 'registration-task',
+  name: 'rej',
   props: ['referenceURL', 'imageryURL'],
   data() {
     return {
@@ -275,6 +275,7 @@ ${pointLines}`
   },
   watch: {
     imageryURL () {
+      console.log("IT CHANGED YES YES YES YES YES", this.imageryURL)
       this.loadImage(this.imageryURL, 'imageryImage')
     },
     referenceURL() {

@@ -1,6 +1,12 @@
-import createApp from './createapp'
+import Vue from 'vue'
+import vuetify from './plugins/vuetify'
+import store from './store'
+import Rej from './components/Rej.vue'
 
-export default createApp({
-  imageryURL: 'demo/vnir-imagery-distorted.png',
-  referenceURL: 'demo/vnir-imagery.png',
-}).$mount('#app')
+Vue.config.productionTip = false
+
+export default Vue.extend({
+  vuetify,
+  store,
+  render: (h) => h(Rej)
+})
