@@ -3,7 +3,7 @@ import { ICommandPalette } from '@jupyterlab/apputils'
 import { IMainMenu } from '@jupyterlab/mainmenu'
 import { IJupyterWidgetRegistry } from '@jupyter-widgets/base'
 
-import { RejWidget, RejDOMWidget, RejModel } from './rej-widget'
+import { RejWidget, RejModel } from './rej-widget'
 
 // Import the extension-entry.js without having our webpack
 // touch it. This file is designed for the SECOND webpack-ing,
@@ -32,7 +32,7 @@ const extension = {
       name: 'ceresimaging-rej',
       version: '0.1.0',
       exports: { 
-        RejDOMWidget, 
+        RejWidget, 
         RejModel,
       }
     })

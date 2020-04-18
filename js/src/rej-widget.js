@@ -1,18 +1,10 @@
-import { VueWidget, VueDOMWidget } from './utils/vue-widget'
+import { VueWidget } from './utils/vue-widget'
 import { DOMWidgetModel } from '@jupyter-widgets/base'
 import { PageConfig } from '@jupyterlab/coreutils'
 // eslint-disable-next-line
 __webpack_public_path__ = PageConfig.getOption('fullStaticUrl') + '/'
 
 import createApp from './createapp'
-
-export class RejWidget extends VueWidget {
-  constructor() {
-    const vue = createApp()
-    super(vue, 'georeference-widget')
-    this.title.label = 'Georeference'
-  }
-}
 
 const toDataURL = (pngBytes) =>
   URL.createObjectURL(
@@ -25,10 +17,9 @@ const toDataURL = (pngBytes) =>
 
 const toLabURL = (localPath) => localPath ? `${PageConfig.getBaseUrl()}files/${localPath}` : localPath
 
-export class RejDOMWidget extends VueDOMWidget {
+export class RejWidget extends VueWidget {
   constructor(...rest) {
     super(...rest)
-    console.log("cheelen down hard")
     this.listenTo(this.model, 'change:referencePath', this._count_changed, this);
   }
   _count_changed() {
