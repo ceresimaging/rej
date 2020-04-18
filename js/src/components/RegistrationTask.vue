@@ -28,7 +28,7 @@
         </v-col>
       </v-row>
       
-      <v-card class="vertical-center" ripple elevation="2">
+      <v-card class="point-list" ripple elevation="2">
         <v-card-text>
           <PointList 
             v-if="points.length > 0" 
@@ -391,7 +391,8 @@ span.keycap {
   to   { margin-top: 0px; }
 }
 
-.vertical-center {
+.point-list {
+  background-color: rgba(252,252,252,0.9)!important;
   position: absolute;
   bottom: 10px;
   left: 10px;
