@@ -173,7 +173,7 @@ def geotiff_to_png(geotiff_path):
     png_dir.mkdir(parents=True, exist_ok=True)
     png_filename = str(png_dir / p.name) + ".png"
 
-    logger.info(f"Converting GeoTIFF '{geotiff_path}' to PNG '{png_filename}")
+    logger.debug(f"Converting GeoTIFF '{geotiff_path}' to PNG '{png_filename}")
 
     # TODO: this probaly surpresses too much, we really just want to surpress rasterio's warning:
     # rasterio/__init__.py:229: NotGeoreferencedWarning: Dataset has no geotransform set. The identity matrix may be returned.
@@ -181,6 +181,6 @@ def geotiff_to_png(geotiff_path):
         warnings.simplefilter("ignore")
         with rasterio.open(geotiff_path, 'r') as geotiff:
             write_png(geotiff, png_filename)
-    logger.info(f"Conversion complete")
+    logger.debug(f"Conversion complete")
     
     return [png_filename, png_filename + ".json"]
