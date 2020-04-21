@@ -6,15 +6,13 @@ __webpack_public_path__ = PageConfig.getOption('fullStaticUrl') + '/'
 
 import App from './App'
 
-const toLabURL = (localPath) => localPath ? `${PageConfig.getBaseUrl()}files/${localPath}` : null
-
 export class RejWidget extends VueWidget {
   computedProps(props) {
     window.rej = this
     return {
       ...props,
-      imageryURL: toLabURL(props.imageryPath),
-      referenceURL: toLabURL(props.referencePath),
+      imageryURL: this.getDownloadUrlFor(props.imageryPath),
+      referenceURL: this.getDownloadUrlFor(props.referencePath),
       ptsCallback: ptsFile => {
         debugger;
         console.log("Sending it by message")
