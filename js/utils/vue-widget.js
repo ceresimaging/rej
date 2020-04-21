@@ -42,6 +42,7 @@ export class VueWidget extends DOMWidgetView {
     // Resolve widgets using rendermime, as per the following workaround:
     // https://github.com/jupyter-widgets/ipywidgets/issues/2800#issuecomment-616844788
     // TODO: follow this issue, submit a PR to implement this properly if we have time
+    if (!fsPath) return
     const resolver = this.model.widget_manager.rendermime.resolver
     const resolvedPath = await resolver.resolveUrl(fsPath)
     return await resolver.getDownloadUrl(resolvedPath)
