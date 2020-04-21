@@ -5,4 +5,4 @@ numpy
 opencv-python
 
 # Python 3.7 has importlib.resources, this is a backport
-importlib_resources; python_version < '3.7'
+importlib_resources #; python_version < '3.7'
