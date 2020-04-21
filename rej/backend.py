@@ -10,7 +10,7 @@ import sys
 import logging
 logger = logging.getLogger(__name__)
 
-EXTENSION_VERSION="0.1.0"
+from .version import extension_version
 
 class Rej(DOMWidget):
     _view_name = Unicode('RejWidget').tag(sync=True)
@@ -18,8 +18,8 @@ class Rej(DOMWidget):
     _view_module = Unicode('ceresimaging-rej').tag(sync=True)
     _model_module = Unicode('ceresimaging-rej').tag(sync=True)
 
-    _view_module_version = Unicode(EXTENSION_VERSION).tag(sync=True)
-    _model_module_version = Unicode(EXTENSION_VERSION).tag(sync=True)
+    _view_module_version = Unicode(extension_version).tag(sync=True)
+    _model_module_version = Unicode(extension_version).tag(sync=True)
 
     imageryPath = Unicode().tag(sync=True)
     referencePath = Unicode().tag(sync=True)

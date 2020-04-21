@@ -1,7 +1,7 @@
 {
   "name": "ceresimaging-rej",
   "description": "Ceres Imaging, now with the power of Advanced Artificial AI Technology(TM)",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "license": "MIT",
   "scripts": {
     "build": "vue-cli-service build --target lib --inline-vue --modern ./js/jupyterlab-extension.js",
