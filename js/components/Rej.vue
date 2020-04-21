@@ -277,8 +277,8 @@ export default {
       const pointLines = this.points
         .filter(([warp, base]) => base && warp)
         .map(([warp, base]) => `\t${base.x}\t${base.y}\t${warp.x}\t${warp.y}`).join('\n')
-      const pts = `
-; ENVI Image to Image GCP File
+      const pts = 
+`; ENVI Image to Image GCP File
 ; base file: ${this.referenceTiffPath}
 ; warp file: ${this.imageryTiffPath}
 ; Base Image (x,y), Warp Image (x,y)
