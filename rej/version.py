@@ -5,4 +5,6 @@ except ImportError:
     import importlib_metadata as metadata
 
 version = metadata.version('rej')
-extension_version = "~" + version
+
+# e.g. version 1.0.5 => ~1.0
+extension_version = "~" + '.'.join(version.split('.')[:-1])
