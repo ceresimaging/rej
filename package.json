@@ -110,10 +110,9 @@
       [
         "@vue/app",
         {
-            "useBuiltins": true
+          "useBuiltins": true
         }
       ]
     ]
   }
 }
-
