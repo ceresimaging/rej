@@ -9,7 +9,9 @@
     "jupyterlab": "jupyter labextension link . --no-build && jupyter lab --watch",
     "lint": "vue-cli-service lint",
     "build:app": "vue-cli-service build ./js/main.js",
-    "serve": "vue-cli-service serve --target app ./js/main.js"
+    "serve": "vue-cli-service serve --target app ./js/main.js",
+    "publish:npm": "npm publish --access public",
+    "publish:pypi": "python setup.py sdist && twine upload --skip-existing dist/rej-*.tar.gz"
   },
   "main": "dist/extension-entry.js",
   "dependencies": {
