@@ -36,7 +36,11 @@ export class RejModel extends DOMWidgetModel {
       _model_module: '@ceresimaging/rej',
       _view_module: '@ceresimaging/rej',
       imageryURL: null,
+      imageryPath: null,
       referenceURL: null,
+      referencePath: null,
+      imageryTiffPath: null,
+      referenceTiffPath: null,
       imagery: null, //new DataView(new ArrayBuffer(0)),
       reference: null, // new DataView(new ArrayBuffer(0)),
     }

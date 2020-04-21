@@ -23,7 +23,8 @@ class Rej(DOMWidget):
 
     imageryPath = Unicode().tag(sync=True)
     referencePath = Unicode().tag(sync=True)
-    referencePath = Unicode().tag(sync=True)
+    imageryTiffPath = Unicode().tag(sync=True)
+    referenceTiffPath = Unicode().tag(sync=True)  
 
     ptsFile = Unicode().tag(sync=True)
 
@@ -46,18 +47,15 @@ class Rej(DOMWidget):
             except:
                 logger.exception()
 
+        self.imageryTiffPath = img_path
+        self.referenceTiffPath = reference_img_path
+
         # TODO: use self.imagery and self.reference to pass this entirely
         # in memory, saving the slowness of writing out to S3!
         t1 = threading.Thread(target=convert_and_save, args=('imageryPath', img_path))
         t2 = threading.Thread(target=convert_and_save, args=('referencePath', reference_img_path))
         t1.start()
         t2.start()
-        def observer(change):
-            logger.info("Change is: ", change)
-            with open('/tmp/gcps_observer.pts', 'w') as f:
-                f.write(change['new'])
-            import ipdb; ipdb.set_trace()
-        self.observe(observer, 'ptsFile')
 
     def save_pts(self, widget, content, buffers):
         if 'ptsFile' in content:

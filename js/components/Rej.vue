@@ -125,7 +125,7 @@ const components = {
 
 export default {
   name: 'rej',
-  props: ['referenceURL', 'imageryURL', 'ptsCallback'],
+  props: ['referenceURL', 'imageryURL', 'imageryTiffPath', 'referenceTiffPath', 'ptsCallback'],
   data() {
     return {
       referencePointColor: "#ed588d",
@@ -168,44 +168,49 @@ export default {
       this.referencePoints.splice(index, 1)
     },
     loadImage (url, prop) {
-      if (!url) return
-
-      console.log(`loadImage(${url}, ${prop})`)
-
       this.numImagesLoading++
-      if (url.includes('.tif') && !url.includes('.png')) {
-        loadGeotiff(url)
-          .then(image => {
+      setTimeout(async () => {
+        url = await url
+        if (!url) {
+          this.numImagesLoading--
+          return
+        }
+        console.log(`loadImage(${url}, ${prop})`)
+
+        if (url.includes('.tif') && !url.includes('.png')) {
+          loadGeotiff(url)
+            .then(image => {
+              this[prop] = image
+              this.numImagesLoading--
+            })
+            .catch(message => {
+              this.numImagesLoading--
+              alert(`Error loading GeoTIFF:\n${url}\n${message}`)
+              throw message
+            })
+        } else {
+          const image = new window.Image()
+          image.onload = () => {
             this[prop] = image
             this.numImagesLoading--
-          })
-          .catch(message => {
+          }
+          image.onerror = () => {
             this.numImagesLoading--
-            alert(`Error loading GeoTIFF:\n${url}\n${message}`)
+            const message = `Couldn't load PNG:\n${url}`
+            alert(message)
             throw message
-          })
-      } else {
-        const image = new window.Image()
-        image.onload = () => {
-          this[prop] = image
-          this.numImagesLoading--
+          }
+          image.src = url
         }
-        image.onerror = () => {
-          this.numImagesLoading--
-          const message = `Couldn't load PNG:\n${url}`
-          alert(message)
-          throw message
-        }
-        image.src = url
-      }
+      })
     },
     async savePTS () {
       const { pts, imageryURL } = this
-      const filename = imageryURL ? imageryURL.substring(imageryURL.lastIndexOf('/')+1) + ".pts" : "gcps.pts"
       if (this.ptsCallback) {
-        console.log("Calling bback")
-        this.ptsCallback(pts, filename)
+        console.log("Calling: ", this.ptsCallback)
+        this.ptsCallback(pts)
       } else {
+        const filename = imageryURL ? imageryURL.substring(imageryURL.lastIndexOf('/')+1) + ".pts" : "gcps.pts"
         await save(pts, filename)
       }
       
@@ -274,8 +279,8 @@ export default {
         .map(([warp, base]) => `\t${base.x}\t${base.y}\t${warp.x}\t${warp.y}`).join('\n')
       const pts = `
 ; ENVI Image to Image GCP File
-; base file: ${this.referenceURL}
-; warp file: ${this.imageryURL}
+; base file: ${this.referenceTiffPath}
+; warp file: ${this.imageryTiffPath}
 ; Base Image (x,y), Warp Image (x,y)
 ;
 ${pointLines}`
@@ -284,6 +289,9 @@ ${pointLines}`
    },
   },
   watch: {
+    numImagesLoading () {
+      console.log("numImagesLoading=", this.numImagesLoading)
+    },
     imageryURL () {
       this.loadImage(this.imageryURL, 'imageryImage')
     },
