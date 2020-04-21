@@ -31,7 +31,7 @@ class Rej(DOMWidget):
     #imagery = trait_types.CByteMemoryView(help="The media data as a memory view of bytes.").tag(sync=True)
     #reference = trait_types.CByteMemoryView(help="The media data as a memory view of bytes.").tag(sync=True)
 
-    def __init__(self, img, reference_img, save_pts_callback=None, *args, **kwargs):
+    def __init__(self, img_path, reference_img_path, save_pts_callback=None, *args, **kwargs):
         super(Rej, self).__init__(*args, **kwargs)
 
         self.save_pts_callback = save_pts_callback
@@ -40,14 +40,16 @@ class Rej(DOMWidget):
         #import /ipdb; ipdb.set_trace()
         def convert_and_save(save_to_attr, path):
             try:
-                setattr(self, save_to_attr, geotiff_to_png(path)[0])
+                png_path = geotiff_to_png(path)[0]
+                logger.error(f"Passing ${save_to_attr} to Javascript: {png_path}")
+                setattr(self, save_to_attr, png_path)
             except:
                 logger.exception()
 
         # TODO: use self.imagery and self.reference to pass this entirely
         # in memory, saving the slowness of writing out to S3!
-        t1 = threading.Thread(target=convert_and_save, args=('imageryPath', img))
-        t2 = threading.Thread(target=convert_and_save, args=('referencePath', reference_img))
+        t1 = threading.Thread(target=convert_and_save, args=('imageryPath', img_path))
+        t2 = threading.Thread(target=convert_and_save, args=('referencePath', reference_img_path))
         t1.start()
         t2.start()
         def observer(change):
@@ -70,7 +72,7 @@ class Rej(DOMWidget):
 
 
 
-def rej(img, reference_img, pts_callback=None):
+def rej(img_path, reference_img_path, pts_callback=None):
     def _cb(pts):
         if pts_callback:
             pts_callback(pts, rej, box)
@@ -79,7 +81,7 @@ def rej(img, reference_img, pts_callback=None):
             box.children = tuple(list(box.children) + [out])
             out.append_stdout(pts)
 
-    rej = Rej(img, reference_img, _cb)
+    rej = Rej(img_path, reference_img_path, _cb)
     box = VBox([ rej ])
     return box
 
