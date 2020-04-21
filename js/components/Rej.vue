@@ -148,6 +148,11 @@ export default {
   },
   components,
   methods: {
+    isWidgetFocused() {
+      console.error("IMPLEMENT Rej.vue isWidgetFocused(), currently spacebar to toggle is disabled")
+      // TODO: implement this so we can safely trap keystrokes
+      return false;
+    },
     async predictPoint (pointNum) {
       const { transform: t } = await this.calculateTransform()
       const { x, y } = this.referencePoints[pointNum]
@@ -307,6 +312,8 @@ ${pointLines}`
   },
   mounted() {
     document.addEventListener("keydown", (e) => {
+      if (!this.isWidgetFocused()) return
+
       if (e.key == " " && !e.shiftKey) {
         e.stopPropagation()
         e.preventDefault()
@@ -318,7 +325,8 @@ ${pointLines}`
       }
     })
     document.addEventListener("keyup", (e) => {
-      if (e.repeat) return
+      if (e.repeat || !this.isWidgetFocused()) return
+      
       let handledKey = false
       if (e.key == " ") {
         this.showWarpedImage = !this.showWarpedImage
