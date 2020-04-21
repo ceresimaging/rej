@@ -15,7 +15,7 @@ Eventually, a new GeoTIFF can be output, we're working on it 🤙🏽.
 You'll need both the JupyterLab widget, as well as the python library:
 
 ```
-jupyter labextension install ceresimaging-rej
+jupyter labextension install @ceresimaging/rej
 pip install rej
 ```
 

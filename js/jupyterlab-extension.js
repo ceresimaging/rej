@@ -29,8 +29,7 @@ const extension = {
     window._debug.jupyter = app
 
     widgets.registerWidget({
-      name: 'ceresimaging-rej',
-      version: '0.1.0',
+      name: '@ceresimaging/rej',
       exports: { 
         RejWidget, 
         RejModel,
