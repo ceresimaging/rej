@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 import { Menu } from '@lumino/widgets'
 import { ICommandPalette } from '@jupyterlab/apputils'
 import { IMainMenu } from '@jupyterlab/mainmenu'
@@ -28,16 +29,18 @@ const extension = {
   ) => {
     window._debug.jupyter = app
 
-    widgets.registerWidget({
+    const widgetProps = {
       name: '@ceresimaging/rej',
+      version: process.env.VUE_APP_VERSION,
       exports: { 
         RejWidget, 
         RejModel,
       }
-    })
+    }
+    console.log("Registering rej widget: ", widgetProps)
+    widgets.registerWidget(widgetProps)
 
-    console.log("rej activating")
-
+    /*
     const { commands, shell } = app
     
     const georefMenu = new Menu({ commands })
@@ -53,8 +56,8 @@ const extension = {
     })
     georefMenu.addItem({ command, args: { origin: 'from the menu' } })
     mainMenu.addMenu(georefMenu, { rank: 80 })
-
-    console.log("rej activated")
+    */
+    console.log("rej, well, um.... registered 🤔")
   }
 }
 
