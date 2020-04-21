@@ -101,5 +101,16 @@
     "jupyter",
     "jupyterlab",
     "jupyterlab-extension"
-  ]
+  ],
+  "babel": {
+    "presets": [
+      [
+        "@vue/app",
+        {
+            "useBuiltins": true
+        }
+      ]
+    ]
+  }
 }
+
