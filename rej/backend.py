@@ -15,8 +15,8 @@ from .version import extension_version
 class Rej(DOMWidget):
     _view_name = Unicode('RejWidget').tag(sync=True)
     _model_name = Unicode('RejModel').tag(sync=True)
-    _view_module = Unicode('ceresimaging-rej').tag(sync=True)
-    _model_module = Unicode('ceresimaging-rej').tag(sync=True)
+    _view_module = Unicode('@ceresimaging/rej').tag(sync=True)
+    _model_module = Unicode('@ceresimaging/rej').tag(sync=True)
 
     _view_module_version = Unicode(extension_version).tag(sync=True)
     _model_module_version = Unicode(extension_version).tag(sync=True)
