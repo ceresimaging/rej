@@ -8,7 +8,8 @@ except ImportError:
 
 from . import _version
 
-_package_path = pkg_resources.files(_version).joinpath('../../package.json')
-package = json.loads(_package_path.read_text())
+package = json.loads(
+  pkg_resources.read_text(_version, 'package.json')
+)
 version = package['version']
 extension_version = "~" + version

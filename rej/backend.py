@@ -42,7 +42,6 @@ class Rej(DOMWidget):
         def convert_and_save(save_to_attr, path):
             try:
                 png_path = geotiff_to_png(path)[0]
-                logger.error(f"Passing ${save_to_attr} to Javascript: {png_path}")
                 setattr(self, save_to_attr, png_path)
             except:
                 logger.exception()
