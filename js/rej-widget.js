@@ -14,12 +14,11 @@ export class RejWidget extends VueWidget {
       imageryURL: this.getDownloadUrlFor(props.imageryPath),
       referenceURL: this.getDownloadUrlFor(props.referencePath),
       ptsCallback: ptsFile => {
-        debugger;
-        console.log("Sending it by message")
+        console.log("Sending ptsFile back to python via message")
         this.send({ ptsFile })
 
         // TODO: why isn't model.set working?????
-        this.model.set('ptsFile', ptsFile)
+        // this.model.set('ptsFile', ptsFile)
       }
     }
   }
