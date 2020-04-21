@@ -128,9 +128,9 @@ export default {
   props: ['referenceURL', 'imageryURL', 'imageryTiffPath', 'referenceTiffPath', 'ptsCallback'],
   data() {
     return {
-      referencePointColor: "#ed588d",
+      referencePointColor: "#0a7bff",
       referencePoints: [],
-      imageryPointColor: "#0a7bff",
+      imageryPointColor: "#ed588d",
       imageryPoints: [],
       rmse: [],
       transform: null,
