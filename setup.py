@@ -21,11 +21,12 @@ setup(
         "Programming Language :: Python :: 3.7",
     ],
     packages=find_packages(),
-    setup_requires=['setuptools_scm'],
+
     include_package_data=True,
     install_requires=[
       "ipywidgets",
       "traitlets",
       "rasterio",
+      'importlib-metadata ~= 1.0 ; python_version < "3.8"',
     ],
 )
