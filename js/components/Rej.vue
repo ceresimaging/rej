@@ -55,6 +55,7 @@
             @click="warp"
             :disabled="!canWarp"
             :loading="warping"
+            :text="Boolean(warpedImage)"
           >
             Warp (w)
           </v-btn>
@@ -62,7 +63,6 @@
             color="primary"
             @click="savePTS"
             :disabled="points.length <= 3"
-            flat
             v-if="warpedImage"
           >
             Save (s)
