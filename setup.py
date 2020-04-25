@@ -2,14 +2,13 @@ import pathlib, json
 from setuptools import setup, find_packages
 
 DOT = pathlib.Path(__file__).parent
-README = (DOT / "README.md").read_text()
 package_json = json.loads((DOT / "package.json").read_text())
 
 setup(
     name="rej",
     version=package_json['version'],
     description="Interactive image registration tool for JupyterLab",
-    long_description=README,
+    long_description="long description is long",
     long_description_content_type="text/markdown",
     url="https://github.com/ceresimaging/rej",
     author="Seth Nickell",
