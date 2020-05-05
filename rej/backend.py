@@ -44,7 +44,7 @@ class Rej(DOMWidget):
                 png_path = geotiff_to_png(path)[0]
                 setattr(self, save_to_attr, png_path)
             except:
-                logger.exception()
+                logger.exception("Uhoh, we encountered a problem converting {path} into a png for Rej")
 
         self.imageryTiffPath = img_path
         self.referenceTiffPath = reference_img_path
