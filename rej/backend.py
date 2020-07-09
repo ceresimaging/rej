@@ -36,13 +36,20 @@ class Rej(DOMWidget):
         super(Rej, self).__init__(*args, **kwargs)
 
         self.save_pts_callback = save_pts_callback
-        self.on_msg(self.save_pts)
+        self.on_msg(self.process_msg)
 
         #import /ipdb; ipdb.set_trace()
         def convert_and_save(save_to_attr, path):
             try:
-                png_path = geotiff_to_png(path)[0]
-                setattr(self, save_to_attr, png_path)
+                print('convert_and_save was called')
+                # print('path', path)
+                # print('save_to_attr', save_to_attr)
+                # print('self:', self)
+                # TODO: try invoking geotiff_to_png, but also returning the
+                # pts path
+                # png_path = geotiff_to_png(path)[0]
+                # print('png_path', png_path)
+                setattr(self, save_to_attr, path)
             except:
                 logger.exception()
 
@@ -56,17 +63,22 @@ class Rej(DOMWidget):
         t1.start()
         t2.start()
 
-    def save_pts(self, widget, content, buffers):
-        if 'ptsFile' in content:
-            ptsFile = content['ptsFile']
-            
+    def process_msg(self, widget, event_name, buffers):
+        if self.ptsFile and event_name=="tell_server_to_download_pts":
             if self.save_pts_callback:
-                self.save_pts_callback(ptsFile)
+                self.save_pts_callback(self.ptsFile)
 
-            with open('/tmp/gcps_savepts.pro.pts', 'w') as f:
-                f.write(ptsFile)
-                print("Saved PTS!", file=sys.stderr)
-
+            # TODO: save the pts file next to the imageryPath?
+            # TODO: make this non-hardcoded, and do some surgery on the
+            # imageryPath (or the reference img path?) to create the
+            # pts_filename
+            pts_filename = "public/demo/gcps.pts"
+            # '/tmp/gcps_savepts.pro.pts'
+            with open(pts_filename, 'w') as f:
+                print("self before saving pts:", self, file=sys.stderr)
+                f.write(self.ptsFile)
+                print("Saved PTS!", pts_filename, file=sys.stderr)
+                print("self after saving pts:", self, file=sys.stderr)
 
 
 def rej(img_path, reference_img_path, pts_callback=None):
@@ -77,7 +89,6 @@ def rej(img_path, reference_img_path, pts_callback=None):
             out = Output()
             box.children = tuple(list(box.children) + [out])
             out.append_stdout(pts)
-
     rej = Rej(img_path, reference_img_path, _cb)
     box = VBox([ rej ])
     return box

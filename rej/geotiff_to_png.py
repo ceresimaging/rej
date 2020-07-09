@@ -150,23 +150,26 @@ def write_png(src, png_filename, remap_photoscan_nodata=True):
         )
     )
         
-    with rasterio.open(
-        png_filename, 'w', 
-        driver='PNG', 
-        width=im.shape[2], 
-        height=im.shape[1],
-        dtype=im.dtype,
-        count=3,
-        nodata=0,
-        zlevel=1, # fastest compression possible
-    ) as dst:
-        dst.write(im)
+    # with rasterio.open(
+    #     png_filename, 'w', 
+    #     driver='PNG', 
+    #     width=im.shape[2], 
+    #     height=im.shape[1],
+    #     dtype=im.dtype,
+    #     count=3,
+    #     nodata=0,
+    #     zlevel=1, # fastest compression possible
+    # ) as dst:
+    #     dst.write(im)
 
     json_filename = png_filename + ".json"
-    write_geotiff_metadata_to(json_filename, src)
+    # write_geotiff_metadata_to(json_filename, src)
 
     return [png_filename, json_filename]
 
+# TODO: this should be invoked by backend only if a png needs to be generated.
+# Will continue to just use a sample png for testing purposes, but the tif rasterio
+# code must be fixed.
 def geotiff_to_png(geotiff_path):
     p = PosixPath(geotiff_path)
     png_dir = p.parent / "png"
@@ -175,12 +178,14 @@ def geotiff_to_png(geotiff_path):
 
     logger.debug(f"Converting GeoTIFF '{geotiff_path}' to PNG '{png_filename}")
 
-    # TODO: this probaly surpresses too much, we really just want to surpress rasterio's warning:
-    # rasterio/__init__.py:229: NotGeoreferencedWarning: Dataset has no geotransform set. The identity matrix may be returned.
-    with warnings.catch_warnings():
-        warnings.simplefilter("ignore")
-        with rasterio.open(geotiff_path, 'r') as geotiff:
-            write_png(geotiff, png_filename)
-    logger.debug(f"Conversion complete")
+    # TODO: cleanup
+    # because i'm supplying png's for testing, just no-op the rasterio stuff
+    # # TODO: this probaly surpresses too much, we really just want to surpress rasterio's warning:
+    # # rasterio/__init__.py:229: NotGeoreferencedWarning: Dataset has no geotransform set. The identity matrix may be returned.
+    # with warnings.catch_warnings():
+    #     warnings.simplefilter("ignore")
+    #     with rasterio.open(geotiff_path, 'r') as geotiff:
+    #         write_png(geotiff, png_filename)
+    # logger.debug(f"Conversion complete")
     
     return [png_filename, png_filename + ".json"]
