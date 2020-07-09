@@ -8,5 +8,11 @@ Vue.config.productionTip = false
 export default Vue.extend({
   vuetify,
   store,
-  render: (h) => h(Rej)
+  render: (h) =>
+    h(Rej, {
+      props: {
+        imageryURL: "demo/vnir-imagery-distorted.png",
+        referenceURL: "demo/vnir-imagery.png",
+      }
+    })
 })
