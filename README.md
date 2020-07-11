@@ -37,7 +37,9 @@ up so every time you save a file, the JupyterLab extension is updated:
 1. `pip install -r requirements.txt && pip install -e . && jupyter nbextension enable --py widgetsnbextension && jupyter labextension install --no-build @jupyter-widgets/jupyterlab-manager && npm install`
 2. In one terminal: `npm run watch`
 3. In another terminal: `npm run jupyterlab`
-   1. Alternatively, I ran the following once `jupyter labextension install`, and then `jupyter lab --watch`. `link` is not supposed to be used with jupyter extensions: https://discourse.jupyter.org/t/about-jupyter-labextension-link-v-s-install/2201/2.
+
+**make sure to `pip install jupyterlab` in the pyenv**
+4. As an alternative to 2,3 above, I ran the following once `jupyter labextension install`, and then only `jupyter lab --watch` to rebuild jupyter and update the rej extension. If python code doesn't trigger a rebuild, calling `jupyter labextension update @ceresimaging/rej` manually should help. `link` is not supposed to be used with jupyter extensions: https://discourse.jupyter.org/t/about-jupyter-labextension-link-v-s-install/2201/2.
 
 ### Run outside JupyterLab for faster dev iteration
 
