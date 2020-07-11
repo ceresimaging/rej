@@ -21,6 +21,8 @@ class Rej(DOMWidget):
     _view_module_version = Unicode(extension_version).tag(sync=True)
     _model_module_version = Unicode(extension_version).tag(sync=True)
 
+    # referencePath: "public/demo/png/1380 Harlan Blocks A VNIR_georegistered.tif.png"
+    # referenceTiffPath: "public/demo/1380 Harlan Blocks A VNIR_georegistered.tif"
     imageryPath = Unicode().tag(sync=True)
     referencePath = Unicode().tag(sync=True)
     imageryTiffPath = Unicode().tag(sync=True)
@@ -41,15 +43,8 @@ class Rej(DOMWidget):
         #import /ipdb; ipdb.set_trace()
         def convert_and_save(save_to_attr, path):
             try:
-                print('convert_and_save was called')
-                # print('path', path)
-                # print('save_to_attr', save_to_attr)
-                # print('self:', self)
-                # TODO: try invoking geotiff_to_png, but also returning the
-                # pts path
-                # png_path = geotiff_to_png(path)[0]
-                # print('png_path', png_path)
-                setattr(self, save_to_attr, path)
+                png_path = geotiff_to_png(path)[0] if path.endswith('.tif') else path
+                setattr(self, save_to_attr, png_path)
             except:
                 logger.exception()
 
@@ -68,17 +63,10 @@ class Rej(DOMWidget):
             if self.save_pts_callback:
                 self.save_pts_callback(self.ptsFile)
 
-            # TODO: save the pts file next to the imageryPath?
-            # TODO: make this non-hardcoded, and do some surgery on the
-            # imageryPath (or the reference img path?) to create the
-            # pts_filename
-            pts_filename = "public/demo/gcps.pts"
-            # '/tmp/gcps_savepts.pro.pts'
+            pts_filename = self.imageryTiffPath[:-3] + "pts"
             with open(pts_filename, 'w') as f:
-                print("self before saving pts:", self, file=sys.stderr)
                 f.write(self.ptsFile)
                 print("Saved PTS!", pts_filename, file=sys.stderr)
-                print("self after saving pts:", self, file=sys.stderr)
 
 
 def rej(img_path, reference_img_path, pts_callback=None):

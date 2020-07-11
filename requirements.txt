@@ -4,5 +4,9 @@ rasterio
 numpy
 opencv-python
 
+## for local dev
+# scikit-image
+# jupyterlab
+
 # Python 3.7 has importlib.resources, this is a backport
 importlib_resources #; python_version < '3.7'
