@@ -1,6 +1,6 @@
 <template>
   <div ref="container" class="image-pane-container fill-height" v-resize="handleResize">
-    <v-overlay :absolute="true" :value="!image" light="true" dark="false" opacity="0">
+    <v-overlay :absolute="true" :value="!image" :light="true" opacity="0">
       <v-progress-circular 
         indeterminate
         :size="75"
