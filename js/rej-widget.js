@@ -39,6 +39,8 @@ export class RejModel extends DOMWidgetModel {
       referencePath: null,
       imageryTiffPath: null,
       referenceTiffPath: null,
+      imageryPNGSize: null,
+      referencePNGSize: null,
       imagery: null, //new DataView(new ArrayBuffer(0)),
       reference: null, // new DataView(new ArrayBuffer(0)),
     }

@@ -1,8 +1,9 @@
 from ipywidgets import DOMWidget, trait_types, Output, VBox, Textarea
-from traitlets import Unicode, Int
+from traitlets import Unicode, Int, Long
 
 from concurrent.futures import ThreadPoolExecutor
 import threading, time
+import os
 
 from .geotiff_to_png import geotiff_to_png
 
@@ -26,7 +27,9 @@ class Rej(DOMWidget):
     imageryPath = Unicode().tag(sync=True)
     referencePath = Unicode().tag(sync=True)
     imageryTiffPath = Unicode().tag(sync=True)
-    referenceTiffPath = Unicode().tag(sync=True)  
+    referenceTiffPath = Unicode().tag(sync=True)
+    imageryPNGSize = Long().tag(sync=True)
+    referencePNGSize = Long().tag(sync=True)
 
     ptsFile = Unicode().tag(sync=True)
 
@@ -44,7 +47,9 @@ class Rej(DOMWidget):
         def convert_and_save(save_to_attr, path):
             try:
                 png_path = geotiff_to_png(path)[0] if path.endswith('.tif') else path
-                setattr(self, save_to_attr, png_path)
+                png_size = os.path.getsize(png_path)
+                setattr(self, save_to_attr + 'Path', png_path)
+                setattr(self, save_to_attr + 'PNGSize', png_size)
             except:
                 logger.exception()
 
@@ -53,8 +58,8 @@ class Rej(DOMWidget):
 
         # TODO: use self.imagery and self.reference to pass this entirely
         # in memory, saving the slowness of writing out to S3!
-        t1 = threading.Thread(target=convert_and_save, args=('imageryPath', img_path))
-        t2 = threading.Thread(target=convert_and_save, args=('referencePath', reference_img_path))
+        t1 = threading.Thread(target=convert_and_save, args=('imagery', img_path))
+        t2 = threading.Thread(target=convert_and_save, args=('reference', reference_img_path))
         t1.start()
         t2.start()
 
