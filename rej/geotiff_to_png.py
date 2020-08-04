@@ -169,7 +169,7 @@ def write_png(src, png_filename, remap_photoscan_nodata=True):
 
 def geotiff_to_png(geotiff_path):
     p = PosixPath(geotiff_path)
-    png_dir = PosixPath("png") / p.parent
+    png_dir = PosixPath("sys/tmp/png") / p.parent
     png_dir.mkdir(parents=True, exist_ok=True)
     png_filename = str(png_dir / p.name) + ".png"
 
