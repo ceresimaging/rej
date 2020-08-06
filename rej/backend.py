@@ -24,7 +24,7 @@ class Rej(DOMWidget):
     imageryPath = Unicode().tag(sync=True)
     referencePath = Unicode().tag(sync=True)
     imageryTiffPath = Unicode().tag(sync=True)
-    referenceTiffPath = Unicode().tag(sync=True)  
+    referenceTiffPath = Unicode().tag(sync=True)
 
     ptsFile = Unicode().tag(sync=True)
 
@@ -43,8 +43,8 @@ class Rej(DOMWidget):
             try:
                 png_path = geotiff_to_png(path)[0]
                 setattr(self, save_to_attr, png_path)
-            except:
-                logger.exception()
+            except Exception as e:
+                logger.exception(e)
 
         self.imageryTiffPath = img_path
         self.referenceTiffPath = reference_img_path
@@ -59,7 +59,7 @@ class Rej(DOMWidget):
     def save_pts(self, widget, content, buffers):
         if 'ptsFile' in content:
             ptsFile = content['ptsFile']
-            
+
             if self.save_pts_callback:
                 self.save_pts_callback(ptsFile)
 
