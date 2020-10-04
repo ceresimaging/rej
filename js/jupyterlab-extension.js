@@ -31,7 +31,7 @@ const extension = {
 
     const widgetProps = {
       name: '@ceresimaging/rej',
-      version: process.env.VUE_APP_VERSION,
+      version: process.env.npm_package_version,
       exports: { 
         RejWidget, 
         RejModel,

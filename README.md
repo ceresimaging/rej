@@ -44,3 +44,10 @@ If you're working on a feature/bug that doesn't require jupyterlab, you
 may prefer to develop inside Vue CLI's hot-reloading app mode. To do this:
 
 1. `npm run serve`
+
+### Publish an updated version to pypi & npm (this will also update the ICIN build)
+
+1. Increment "version" in `package.json`
+2. `npm run install`
+3. `npm run build`
+4. `npm publish:all`
