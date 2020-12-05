@@ -8,6 +8,13 @@
     <link href="//cdn.jsdelivr.net/npm/@mdi/font@3.x/css/materialdesignicons.min.css" rel="stylesheet">
 
     <v-content class="pa-0 ma-0 fill-height">
+      <div v-if="isFirefox">
+        This requires OffscreenCanvas which Firefox currently does not support.
+        <a href="https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas">
+          https://developer.mozilla.org/en-US/docs/Web/API/OffscreenCanvas
+        </a>
+      </div>
+
       <v-row class="align-top fill-height d-flex flex-nowrap" justify="center">
         <v-col class="pa-0 fill-height" style="position: relative">
           <ImagePane
@@ -286,7 +293,10 @@ export default {
 ${pointLines}`
       console.log(pts)
       return pts
-   },
+    },
+    isFirefox() {
+      return navigator.userAgent.indexOf("Firefox") > -1
+    }
   },
   watch: {
     numImagesLoading () {
