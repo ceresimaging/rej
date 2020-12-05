@@ -19,13 +19,18 @@
     "publish:all": "npm run publish:pypi && npm run publish:npm"
   },
   "main": "dist/extension-entry.js",
+  "peerDependencies": {
+    "react": "*"
+  },
   "dependencies": {
-    "@jupyterlab/application": ">2.0.0",
-    "@jupyterlab/mainmenu": ">2.0.0",
-    "@lumino/algorithm": ">1.2.3",
-    "@lumino/coreutils": ">1.3.1",
-    "@lumino/disposable": ">1.3.1",
-    "@lumino/widgets": ">1.5.0",
+    "@jupyterlab/application": "3.0.0-rc.6",
+    "@jupyterlab/apputils": "3.0.0-rc.6",
+    "@jupyterlab/mainmenu": "3.0.0-rc.6",
+    "@jupyterlab/ui-components": "3.0.0-rc.6",
+    "@lumino/algorithm": "*",
+    "@lumino/coreutils": "*",
+    "@lumino/disposable": "*",
+    "@lumino/widgets": "*",
     "core-js": "^3.6.5",
     "fast-geotiff": "^1.0.0-beta.4",
     "gdal-js": "^2.0.0",
